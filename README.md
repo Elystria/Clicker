@@ -1,2 +1,3 @@
 # Clicker
-Un jeu basé sur le concept du clicker
+LE jeu basé sur le concept du clicker
+<3
