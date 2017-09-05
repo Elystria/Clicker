@@ -59,6 +59,7 @@ public class WindowGame extends BasicGame {
         if (Input.KEY_ESCAPE == key){
             container.exit();
         }
+        //Arret du perso quand on ne presse plus la touche
         if (Input.KEY_UP == key || Input.KEY_DOWN == key ||Input.KEY_LEFT == key || Input.KEY_RIGHT == key ){
             this.moving = false;
         }
@@ -71,6 +72,14 @@ public class WindowGame extends BasicGame {
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
+        if (this.moving) {
+            switch (this.direction) {
+                case 0: this.y -= .1f * delta; break;
+                case 1: this.x -= .1f * delta; break;
+                case 2: this.y += .1f * delta; break;
+                case 3: this.x += .1f * delta; break;
+            }
+        }
 
     }
 }
