@@ -1,3 +1,5 @@
+import org.newdawn.slick.SlickException;
+
 /**
  * Classe Partie
  * Contient les informations relatives à la partie en cours
@@ -5,39 +7,38 @@
 public class Partie {
 
     /* Attributs */
-    //Nombre de pixels possédés
-    private int nbPixels;
-    //Nombre de pixels gagnés chaque seconde
-    private int pps;
-    //Nombre de pixels gagnés par clic
-    private int ppc;
 
-    //TODO: méthode jouer ?
+    private Counter counter;
+//    private Shop shop;
+//    private Inventaire inventaire;
+//    private Events events;
 
+    /* Constructeurs */
 
-    /* Setters */
-    public void setNbPixels(int nbPixels) {
-        this.nbPixels = nbPixels;
+    public Partie() throws SlickException {
+        this.counter = new Counter();
+//        this.shop = new Shop();
+//        this.inventaire = new Inventaire();
+//        this.events = new Events();
     }
 
-    public void setPps(int pps) {
-        this.pps = pps;
+    /* Méthodes */
+
+    /* Getteurs et Setteurs */
+
+    public Counter getCounter() {
+        return counter;
     }
 
-    public void setPpc(int ppc) {
-        this.ppc = ppc;
-    }
-
-    /* Getters */
-    public int getNbPixels() {
-        return nbPixels;
-    }
-
-    public int getPps() {
-        return pps;
-    }
-
-    public int getPpc() {
-        return ppc;
-    }
+//    public Shop getShop() {
+//        return shop;
+//    }
+//
+//    public Inventaire getInventaire() {
+//        return inventaire;
+//    }
+//
+//    public Events getEvents() {
+//        return events;
+//    }
 }

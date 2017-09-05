@@ -12,6 +12,8 @@ public class WindowGame extends BasicGame {
     // Tableau de srpites
     private Animation[] animations = new Animation[8];
 
+    private Partie partie;
+
     public WindowGame() {
         super("Lesson 1 :: WindowGame");
     }
@@ -33,6 +35,7 @@ public class WindowGame extends BasicGame {
         this.animations[6] = loadAnimation(spriteSheet, 1, 9, 2);
         this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
 
+        partie = new Partie();
     }
 
     private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
@@ -68,6 +71,7 @@ public class WindowGame extends BasicGame {
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
         g.drawAnimation(animations[direction + (moving ? 4 : 0)], x, y);
+        g.drawAnimation(partie.getCounter().getAnimation(), 100, 100);
     }
 
     @Override
