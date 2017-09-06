@@ -6,8 +6,8 @@ public class WindowGame extends BasicGame {
     /* Attributs */
 
     private GameContainer container; // le conteneur du windows
-    private static final int WINDOWS_HEIGHT = 960;
-    private static final int WINDOWS_WIDTH = 720;
+    private static final int WINDOWS_HEIGHT = 720;
+    private static final int WINDOWS_WIDTH = 960;
     private Partie partie; // la partie en elle-même
 
     /* Constructeurs */
@@ -31,6 +31,13 @@ public class WindowGame extends BasicGame {
         if (Input.KEY_ESCAPE == key){
             container.exit();
         }
+   }
+
+   @Override
+   public void mouseClicked(int button, int x, int y, int clickCount){
+
+        //Clic sur le counter
+       this.partie.getCounter().mouseClic(x, y);
    }
 
     @Override
