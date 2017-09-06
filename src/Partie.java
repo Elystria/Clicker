@@ -16,7 +16,7 @@ public class Partie {
 
     /* Constructeurs */
 
-    public Partie(WindowGame windows) throws SlickException {
+    public Partie() throws SlickException {
         this.windows = windows;
         this.counter = new Counter();
 //        this.shop = new Shop();

@@ -6,8 +6,8 @@ public class WindowGame extends BasicGame {
     /* Attributs */
 
     private GameContainer container; // le conteneur du windows
-    private static final int WINDOWS_HEIGHT = 720;
-    private static final int WINDOWS_WIDTH = 960;
+    private static final int WINDOWS_WIDTH = 960; // la largeur de la fenêtre
+    private static final int WINDOWS_HEIGHT = 720; // la hauteur de la fenêtre
     private Partie partie; // la partie en elle-même
 
     /* Constructeurs */
@@ -23,7 +23,7 @@ public class WindowGame extends BasicGame {
         this.container = container;
 
         // on initialise la partie
-        partie = new Partie(this);
+        partie = new Partie();
     }
 
     @Override
@@ -35,19 +35,19 @@ public class WindowGame extends BasicGame {
 
    @Override
    public void mouseClicked(int button, int x, int y, int clickCount){
-
         //Clic sur le counter
-       this.partie.getCounter().mouseClic(x, y);
+       this.partie.getCounter().mouseClicked(x, y);
    }
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
         // affichage du counter
-        partie.getCounter().afficher(this, 2f);
+        partie.getCounter().afficher(g, this, partie.getCounter().getTailleActuelle());
     }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
+       partie.getCounter().update();
     }
 
     /* Getteurs et Setteurs */
