@@ -18,13 +18,16 @@ public class Counter {
     private final static int TIME_SPRITE_DURATION = 100;
     private int xPos;
     private int yPos;
+    private float taille;
+    private float tailleVariation;
+    private boolean tailleCroissante;
     private Rectangle fond; //Le rectangle permettant de gérer la couleur du tesseract
     private GradientFill fondFill; //Pour remplissage du rectangle
 
     /* Constructeurs */
 
-    public Counter(WindowGame windows) throws SlickException {
-        this(0, 0, 1, windows);
+    public Counter() throws SlickException {
+        this(0, 0, 1);
     }
 
 
@@ -44,6 +47,10 @@ public class Counter {
         for(int i = 0; i < NB_SPRITE_ANIMATION; i++){
             this.animation.addFrame(spriteSheet.getSprite(i, 0), TIME_SPRITE_DURATION);
         }
+        this.taille = 1f;
+        this.tailleVariation = 0.1f;
+        this.tailleCroissante = true;
+  
         // initialisation de la position d'affichage
         this.xPos = windows.getWindowsWidth() / 2 - animation.getWidth() / 2;
         this.yPos = windows.getWindowsHeight() / 2 - animation.getHeight() / 2;
@@ -67,9 +74,19 @@ public class Counter {
     }
 
     /* Affiche le counter à l'écran */
-    public void afficher(Graphics g) {
+    public void afficher(Graphics g, WindowGame windows, float scale) {
+        int xPos = windows.getWindowsWidth() / 2 - ((int) ((animation.getWidth() * scale) / 2));
+        int yPos = windows.getWindowsHeight() / 2 - ((int) ((animation.getHeight() * scale) / 2));
+        this.animation.draw(yPos, xPos, animation.getWidth() * scale, animation.getHeight()*scale);
         g.fill(this.getFond(), this.getFondFill());
-        g.drawAnimation(this.getAnimation(), xPos, yPos);
+    }
+
+    /* S'occupe de mettre à jour le counter */
+    public void update() {
+        // mise à jour de la taille du counter
+        if(this.tailleCroissante) {
+            // TODO !!!
+        }
     }
 
     /* Change la couleur du tesseract */
@@ -80,7 +97,6 @@ public class Counter {
 
     /* Réagit lors du clic d'un utilisateur
      * x et y : int coordonnées du clic  */
-
     public void mouseClic(int x, int y){
         int xPos = this.getxPos();
         int yPos = this.getyPos();
