@@ -18,7 +18,7 @@ public class Partie {
 
     public Partie(WindowGame windows) throws SlickException {
         this.windows = windows;
-        this.counter = new Counter(windows);
+        this.counter = new Counter();
 //        this.shop = new Shop();
 //        this.inventaire = new Inventaire();
 //        this.events = new Events();

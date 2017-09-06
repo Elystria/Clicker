@@ -14,16 +14,17 @@ public class Counter {
     private Animation animation;
     private final static int NB_SPRITE_ANIMATION = 15;
     private final static int TIME_SPRITE_DURATION = 100;
-    private int xPos;
-    private int yPos;
+    private float taille;
+    private float tailleVariation;
+    private boolean tailleCroissante;
 
     /* Constructeurs */
 
-    public Counter(WindowGame windows) throws SlickException {
-        this(0, 0, 1, windows);
+    public Counter() throws SlickException {
+        this(0, 0, 1);
     }
 
-    public Counter(int nbPixelsDepart, int pps, int ppc, WindowGame windows) throws SlickException {
+    public Counter(int nbPixelsDepart, int pps, int ppc) throws SlickException {
         // initialisation du model
         this.nbPixels = nbPixelsDepart;
         this.pps = pps ;
@@ -35,10 +36,10 @@ public class Counter {
         for(int i = 0; i < NB_SPRITE_ANIMATION; i++){
             this.animation.addFrame(spriteSheet.getSprite(i, 0), TIME_SPRITE_DURATION);
         }
-        // initialisation de la position d'affichage
-        this.xPos = windows.getWindowsWidth() / 2 - animation.getWidth() / 2;
-        this.yPos = windows.getWindowsHeight() / 2 - animation.getHeight() / 2;
-    }
+        this.taille = 1f;
+        this.tailleVariation = 0.1f;
+        this.tailleCroissante = true;
+   }
 
 
     /* Méthodes */
@@ -54,8 +55,18 @@ public class Counter {
     }
 
     /* Affiche le counter à l'écran */
-    public void afficher(Graphics g) {
-        g.drawAnimation(this.getAnimation(), yPos, xPos);
+    public void afficher(WindowGame windows, float scale) {
+        int xPos = windows.getWindowsWidth() / 2 - ((int) ((animation.getWidth() * scale) / 2));
+        int yPos = windows.getWindowsHeight() / 2 - ((int) ((animation.getHeight() * scale) / 2));
+        this.animation.draw(yPos, xPos, animation.getWidth() * scale, animation.getHeight()*scale);
+    }
+
+    /* S'occupe de mettre à jour le counter */
+    public void update() {
+        // mise à jour de la taille du counter
+        if(this.tailleCroissante) {
+            // TODO !!!
+        }
     }
 
 
