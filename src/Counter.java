@@ -1,6 +1,9 @@
+//TODO : mettre des couleurs aleatoires pour le gradient
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
+import java.util.Random;
 
 public class Counter {
 
@@ -32,7 +35,11 @@ public class Counter {
         this.ppc = ppc ;
 
         // initialisation de l'affichage
-        SpriteSheet spriteSheet = new SpriteSheet("resources/sprites/tesseract_spritesheet_trans.png", 160, 160);
+        //Obtenir lles dimensions du spritesheet
+        Image spriteSheetPNG = new Image("resources/sprites/tesseract_spritesheet_trans.png");
+        int hauteurSheet = spriteSheetPNG.getHeight();
+        int largeurSheet = spriteSheetPNG.getWidth();
+        SpriteSheet spriteSheet = new SpriteSheet(spriteSheetPNG, hauteurSheet, largeurSheet/15);
         this.animation = new Animation();
         for(int i = 0; i < NB_SPRITE_ANIMATION; i++){
             this.animation.addFrame(spriteSheet.getSprite(i, 0), TIME_SPRITE_DURATION);
@@ -42,8 +49,8 @@ public class Counter {
         this.yPos = windows.getWindowsHeight() / 2 - animation.getHeight() / 2;
 
         //Creation reclangle et fond (attention y et x inverses)
-        this.fond = new Rectangle(this.xPos, this.yPos, 160, 160);
-        this.fondFill = new GradientFill(this.xPos, this.yPos, Color.cyan, this.xPos+160, this.yPos+160, Color.red);
+        this.fond = new Rectangle(this.xPos, this.yPos, animation.getWidth(), animation.getHeight());
+        this.fondFill = new GradientFill(this.xPos, this.yPos, Color.cyan, this.xPos+animation.getWidth(), this.yPos+animation.getHeight(), Color.red);
     }
 
 
@@ -70,6 +77,24 @@ public class Counter {
         this.getFondFill().setStartColor(coulDebut);
         this.getFondFill().setEndColor(coulFin);
     }
+
+    /* Réagit lors du clic d'un utilisateur
+     * x et y : int coordonnées du clic  */
+
+    public void mouseClic(int x, int y){
+        int xPos = this.getxPos();
+        int yPos = this.getyPos();
+        //Vérifier la localisation du clic
+        if (x>=xPos && x<=xPos+getAnimation().getHeight() && y>=yPos && y<=yPos+getAnimation().getWidth()){
+            //Changer la couleur du tesseract de manière aleatoire;
+            Random rdn = new Random();
+            Color colorStart = new Color(rdn.nextInt(256), rdn.nextInt(256), rdn.nextInt(256));
+            Color colorEnd = new Color(rdn.nextInt(256), rdn.nextInt(256), rdn.nextInt(256));
+
+            this.setCouleurTess(colorStart, colorEnd);
+        }
+    }
+
 
 
     /* Getteurs et Setteurs */

@@ -35,17 +35,9 @@ public class WindowGame extends BasicGame {
 
    @Override
    public void mouseClicked(int button, int x, int y, int clickCount){
-       int xPos = this.partie.getCounter().getxPos();
-       int yPos = this.partie.getCounter().getyPos();
-       if (x>=xPos && x<=xPos+160 && y>=yPos && y<=yPos+160){
-            //Changer la couleur du tesseract
-            if(this.partie.getCounter().getFondFill().getStartColor().equals(Color.cyan)) {
-                this.partie.getCounter().setCouleurTess(Color.blue, Color.green);
-            }
-            else{
-                this.partie.getCounter().setCouleurTess(Color.cyan, Color.white);
-            }
-        }
+
+        //Clic sur le counter
+       this.partie.getCounter().mouseClic(x, y);
    }
 
     @Override
