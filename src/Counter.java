@@ -1,4 +1,5 @@
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -13,14 +14,16 @@ public class Counter {
     private Animation animation;
     private final static int NB_SPRITE_ANIMATION = 15;
     private final static int TIME_SPRITE_DURATION = 100;
+    private int xPos;
+    private int yPos;
 
     /* Constructeurs */
 
-    public Counter() throws SlickException {
-        this(0, 0, 1);
+    public Counter(WindowGame windows) throws SlickException {
+        this(0, 0, 1, windows);
     }
 
-    public Counter(int nbPixelsDepart, int pps, int ppc) throws SlickException {
+    public Counter(int nbPixelsDepart, int pps, int ppc, WindowGame windows) throws SlickException {
         // initialisation du model
         this.nbPixels = nbPixelsDepart;
         this.pps = pps ;
@@ -32,6 +35,9 @@ public class Counter {
         for(int i = 0; i < NB_SPRITE_ANIMATION; i++){
             this.animation.addFrame(spriteSheet.getSprite(i, 0), TIME_SPRITE_DURATION);
         }
+        // initialisation de la position d'affichage
+        this.xPos = windows.getWindowsWidth() / 2 - animation.getWidth() / 2;
+        this.yPos = windows.getWindowsHeight() / 2 - animation.getHeight() / 2;
     }
 
 
@@ -45,6 +51,11 @@ public class Counter {
     /* Met à jour le nombre total de pixels gagnés grace au pps */
     public void incrementer(){
         setNbPixels(this.getNbPixels() + this.getPps());
+    }
+
+    /* Affiche le counter à l'écran */
+    public void afficher(Graphics g) {
+        g.drawAnimation(this.getAnimation(), yPos, xPos);
     }
 
 

@@ -9,14 +9,16 @@ public class Partie {
     /* Attributs */
 
     private Counter counter;
+    private WindowGame windows;
 //    private Shop shop;
 //    private Inventaire inventaire;
 //    private Events events;
 
     /* Constructeurs */
 
-    public Partie() throws SlickException {
-        this.counter = new Counter();
+    public Partie(WindowGame windows) throws SlickException {
+        this.windows = windows;
+        this.counter = new Counter(windows);
 //        this.shop = new Shop();
 //        this.inventaire = new Inventaire();
 //        this.events = new Events();
