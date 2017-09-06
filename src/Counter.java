@@ -1,7 +1,9 @@
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
+//TODO : mettre des couleurs aleatoires pour le gradient
+
+import org.newdawn.slick.*;
+import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.geom.Rectangle;
+import java.util.Random;
 
 public class Counter {
 
@@ -14,9 +16,13 @@ public class Counter {
     private Animation animation;
     private final static int NB_SPRITE_ANIMATION = 15;
     private final static int TIME_SPRITE_DURATION = 100;
+    private int xPos;
+    private int yPos;
     private float taille;
     private float tailleVariation;
     private boolean tailleCroissante;
+    private Rectangle fond; //Le rectangle permettant de gérer la couleur du tesseract
+    private GradientFill fondFill; //Pour remplissage du rectangle
 
     /* Constructeurs */
 
@@ -24,14 +30,19 @@ public class Counter {
         this(0, 0, 1);
     }
 
-    public Counter(int nbPixelsDepart, int pps, int ppc) throws SlickException {
+
+    public Counter(int nbPixelsDepart, int pps, int ppc, WindowGame windows) throws SlickException {
         // initialisation du model
         this.nbPixels = nbPixelsDepart;
         this.pps = pps ;
         this.ppc = ppc ;
 
         // initialisation de l'affichage
-        SpriteSheet spriteSheet = new SpriteSheet("resources/sprites/tesseract_spritesheet.png", 160, 160);
+        //Obtenir lles dimensions du spritesheet
+        Image spriteSheetPNG = new Image("resources/sprites/tesseract_spritesheet_trans.png");
+        int hauteurSheet = spriteSheetPNG.getHeight();
+        int largeurSheet = spriteSheetPNG.getWidth();
+        SpriteSheet spriteSheet = new SpriteSheet(spriteSheetPNG, hauteurSheet, largeurSheet/15);
         this.animation = new Animation();
         for(int i = 0; i < NB_SPRITE_ANIMATION; i++){
             this.animation.addFrame(spriteSheet.getSprite(i, 0), TIME_SPRITE_DURATION);
@@ -39,7 +50,15 @@ public class Counter {
         this.taille = 1f;
         this.tailleVariation = 0.1f;
         this.tailleCroissante = true;
-   }
+  
+        // initialisation de la position d'affichage
+        this.xPos = windows.getWindowsWidth() / 2 - animation.getWidth() / 2;
+        this.yPos = windows.getWindowsHeight() / 2 - animation.getHeight() / 2;
+
+        //Creation reclangle et fond (attention y et x inverses)
+        this.fond = new Rectangle(this.xPos, this.yPos, animation.getWidth(), animation.getHeight());
+        this.fondFill = new GradientFill(this.xPos, this.yPos, Color.cyan, this.xPos+animation.getWidth(), this.yPos+animation.getHeight(), Color.red);
+    }
 
 
     /* Méthodes */
@@ -55,10 +74,11 @@ public class Counter {
     }
 
     /* Affiche le counter à l'écran */
-    public void afficher(WindowGame windows, float scale) {
+    public void afficher(Graphics g, WindowGame windows, float scale) {
         int xPos = windows.getWindowsWidth() / 2 - ((int) ((animation.getWidth() * scale) / 2));
         int yPos = windows.getWindowsHeight() / 2 - ((int) ((animation.getHeight() * scale) / 2));
         this.animation.draw(yPos, xPos, animation.getWidth() * scale, animation.getHeight()*scale);
+        g.fill(this.getFond(), this.getFondFill());
     }
 
     /* S'occupe de mettre à jour le counter */
@@ -68,6 +88,29 @@ public class Counter {
             // TODO !!!
         }
     }
+
+    /* Change la couleur du tesseract */
+    public void setCouleurTess(Color coulDebut, Color coulFin){
+        this.getFondFill().setStartColor(coulDebut);
+        this.getFondFill().setEndColor(coulFin);
+    }
+
+    /* Réagit lors du clic d'un utilisateur
+     * x et y : int coordonnées du clic  */
+    public void mouseClic(int x, int y){
+        int xPos = this.getxPos();
+        int yPos = this.getyPos();
+        //Vérifier la localisation du clic
+        if (x>=xPos && x<=xPos+getAnimation().getHeight() && y>=yPos && y<=yPos+getAnimation().getWidth()){
+            //Changer la couleur du tesseract de manière aleatoire;
+            Random rdn = new Random();
+            Color colorStart = new Color(rdn.nextInt(256), rdn.nextInt(256), rdn.nextInt(256));
+            Color colorEnd = new Color(rdn.nextInt(256), rdn.nextInt(256), rdn.nextInt(256));
+
+            this.setCouleurTess(colorStart, colorEnd);
+        }
+    }
+
 
 
     /* Getteurs et Setteurs */
@@ -98,5 +141,29 @@ public class Counter {
 
     public Animation getAnimation() {
         return animation;
+    }
+
+    public Rectangle getFond() {return fond;}
+
+    public void setFond(Rectangle fond) { this.fond = fond;}
+
+    public GradientFill getFondFill() {return fondFill;}
+
+    public void setFondFill(GradientFill fondFill) {this.fondFill = fondFill;}
+
+    public int getxPos() {
+        return xPos;
+    }
+
+    public void setxPos(int xPos) {
+        this.xPos = xPos;
+    }
+
+    public int getyPos() {
+        return yPos;
+    }
+
+    public void setyPos(int yPos) {
+        this.yPos = yPos;
     }
 }
