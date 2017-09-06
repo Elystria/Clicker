@@ -1,7 +1,6 @@
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.*;
+import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Counter {
 
@@ -16,12 +15,15 @@ public class Counter {
     private final static int TIME_SPRITE_DURATION = 100;
     private int xPos;
     private int yPos;
+    private Rectangle fond; //Le rectangle permettant de gérer la couleur du tesseract
+    private GradientFill fondFill; //Pour remplissage du rectangle
 
     /* Constructeurs */
 
     public Counter(WindowGame windows) throws SlickException {
         this(0, 0, 1, windows);
     }
+
 
     public Counter(int nbPixelsDepart, int pps, int ppc, WindowGame windows) throws SlickException {
         // initialisation du model
@@ -30,7 +32,7 @@ public class Counter {
         this.ppc = ppc ;
 
         // initialisation de l'affichage
-        SpriteSheet spriteSheet = new SpriteSheet("resources/sprites/tesseract_spritesheet.png", 160, 160);
+        SpriteSheet spriteSheet = new SpriteSheet("resources/sprites/tesseract_spritesheet_trans.png", 160, 160);
         this.animation = new Animation();
         for(int i = 0; i < NB_SPRITE_ANIMATION; i++){
             this.animation.addFrame(spriteSheet.getSprite(i, 0), TIME_SPRITE_DURATION);
@@ -38,6 +40,10 @@ public class Counter {
         // initialisation de la position d'affichage
         this.xPos = windows.getWindowsWidth() / 2 - animation.getWidth() / 2;
         this.yPos = windows.getWindowsHeight() / 2 - animation.getHeight() / 2;
+
+        //Creation reclangle et fond (attention y et x inverses)
+        this.fond = new Rectangle(this.xPos, this.yPos, 160, 160);
+        this.fondFill = new GradientFill(this.xPos, this.yPos, Color.cyan, this.xPos+160, this.yPos+160, Color.red);
     }
 
 
@@ -55,7 +61,14 @@ public class Counter {
 
     /* Affiche le counter à l'écran */
     public void afficher(Graphics g) {
-        g.drawAnimation(this.getAnimation(), yPos, xPos);
+        g.fill(this.getFond(), this.getFondFill());
+        g.drawAnimation(this.getAnimation(), xPos, yPos);
+    }
+
+    /* Change la couleur du tesseract */
+    public void setCouleurTess(Color coulDebut, Color coulFin){
+        this.getFondFill().setStartColor(coulDebut);
+        this.getFondFill().setEndColor(coulFin);
     }
 
 
@@ -87,5 +100,29 @@ public class Counter {
 
     public Animation getAnimation() {
         return animation;
+    }
+
+    public Rectangle getFond() {return fond;}
+
+    public void setFond(Rectangle fond) { this.fond = fond;}
+
+    public GradientFill getFondFill() {return fondFill;}
+
+    public void setFondFill(GradientFill fondFill) {this.fondFill = fondFill;}
+
+    public int getxPos() {
+        return xPos;
+    }
+
+    public void setxPos(int xPos) {
+        this.xPos = xPos;
+    }
+
+    public int getyPos() {
+        return yPos;
+    }
+
+    public void setyPos(int yPos) {
+        this.yPos = yPos;
     }
 }

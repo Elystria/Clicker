@@ -6,8 +6,8 @@ public class WindowGame extends BasicGame {
     /* Attributs */
 
     private GameContainer container; // le conteneur du windows
-    private static final int WINDOWS_HEIGHT = 960;
-    private static final int WINDOWS_WIDTH = 720;
+    private static final int WINDOWS_HEIGHT = 720;
+    private static final int WINDOWS_WIDTH = 960;
     private Partie partie; // la partie en elle-même
 
     /* Constructeurs */
@@ -30,6 +30,21 @@ public class WindowGame extends BasicGame {
     public void keyReleased(int key, char c){
         if (Input.KEY_ESCAPE == key){
             container.exit();
+        }
+   }
+
+   @Override
+   public void mouseClicked(int button, int x, int y, int clickCount){
+       int xPos = this.partie.getCounter().getxPos();
+       int yPos = this.partie.getCounter().getyPos();
+       if (x>=xPos && x<=xPos+160 && y>=yPos && y<=yPos+160){
+            //Changer la couleur du tesseract
+            if(this.partie.getCounter().getFondFill().getStartColor().equals(Color.cyan)) {
+                this.partie.getCounter().setCouleurTess(Color.blue, Color.green);
+            }
+            else{
+                this.partie.getCounter().setCouleurTess(Color.cyan, Color.white);
+            }
         }
    }
 

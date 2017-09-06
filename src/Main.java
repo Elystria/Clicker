@@ -10,8 +10,8 @@ public class Main {
 
         WindowGame windows = new WindowGame();
         new AppGameContainer(windows,
-                windows.getWindowsHeight(),
                 windows.getWindowsWidth(),
+                windows.getWindowsHeight(),
                 false).start();
 
     }
