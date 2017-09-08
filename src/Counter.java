@@ -1,4 +1,3 @@
-//TODO : mettre des couleurs aleatoires pour le gradient
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.fills.GradientFill;
@@ -32,6 +31,7 @@ public class Counter {
     private float tailleActuelle; // la véritable taille finale du counter !
     private Rectangle fond; // Le rectangle de fond permettant de gérer la couleur du tesseract
     private GradientFill fondFill; // Pour remplissage du rectangle
+    private boolean sensContraste; //indique quelle couleur s'éclaircit et laquelle s'assombrit dans le tesseract
 
     /* Constructeurs */
 
@@ -77,6 +77,7 @@ public class Counter {
                 xPos + (animation.getWidth() * tailleActuelle),
                 yPos + (animation.getHeight() * tailleActuelle),
                 Color.red);
+        this.sensContraste = true;
     }
 
 
@@ -140,7 +141,18 @@ public class Counter {
                i = i - 1;
            }
        }
+        //Changement passif de couleur
+
+        if (sensContraste) {
+           this.fondFill.setStartColor(this.fondFill.getStartColor().brighter(0.01f));
+           this.fondFill.setEndColor(this.fondFill.getEndColor().darker(0.01f));
+        }else {
+            this.fondFill.setStartColor(this.fondFill.getStartColor().darker(0.01f));
+            this.fondFill.setEndColor(this.fondFill.getEndColor().brighter(0.01f));
+        }
+
     }
+
 
     /* Change la couleur du tesseract */
     public void setCouleurTess(Color coulDebut, Color coulFin){
