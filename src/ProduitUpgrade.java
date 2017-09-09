@@ -7,8 +7,8 @@ public class ProduitUpgrade extends Produit {
 
     }
 
-    @Override
-    public void afficher(){}
+    //@Override
+    //public void afficher(){}
 
     @Override
     public void acheter(){}

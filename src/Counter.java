@@ -183,9 +183,9 @@ public class Counter {
         }
 
         if(this.zoneGrad != oldZoneGrad){
-            System.out.println("Ancienne Zone :" + oldZoneGrad);
+           /* System.out.println("Ancienne Zone :" + oldZoneGrad);
             System.out.println("xStart : " + this.xStart);
-            System.out.println("yStart : " + this.yStart);
+            System.out.println("yStart : " + this.yStart);*/
         }
         //Debut et fin du gradient
         this.fondFill.setStart(this.xStart, this.yStart);
