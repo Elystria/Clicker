@@ -40,6 +40,8 @@ public class Counter {
     private int yStart;
     private int xEnd;
     private int yEnd;
+    private int coefRotation;//indique la vitesse de rotation
+    private int zoneGrad;
 
     /* Constructeurs */
 
@@ -78,6 +80,8 @@ public class Counter {
         this.yStart = yPos;
         this.xEnd = (int) (xPos + (animation.getWidth() * tailleActuelle));
         this.yEnd = (int) (yPos + (animation.getHeight() * tailleActuelle));
+        this.coefRotation = 1;
+        this.zoneGrad = 1;
 
 
         //Creation reclangle et fond
@@ -114,10 +118,10 @@ public class Counter {
         this.yPos = windows.getWindowsHeight() / 2 - ((int) ((animation.getHeight() * scale) / 2));
         //Premier affichage
         if(this.xStart == 0){
-            this.xStart = this.getxPos();
-            this.yStart = this.getyPos();
-            this.xEnd = this.xStart + (int) (animation.getWidth() * scale)/2;
-            this.yEnd = this.yStart + (int) (animation.getHeight() * scale)/2;
+            this.xStart = windows.getWindowsWidth() / 2;
+            this.yStart = yPos;
+            this.xEnd = this.xStart;
+            this.yEnd = this.yStart + (int) (animation.getHeight() * scale);
             this.fondFill.setStart(xStart, yStart);
             this.fondFill.setEnd(xEnd, yEnd);
         }
@@ -130,43 +134,58 @@ public class Counter {
         //On calcule et on fait tourner le gradient
         int xCentre = getXCentre();
         int yCentre = getYCentre();
-
+        int oldZoneGrad = this.zoneGrad;
         if (getXStart() >= xCentre){
             //Si Ystart est sup a Ycentre
-            this.yStart--;
-            this.yEnd++;
+            for (int i = 1; i<= coefRotation; i++){
+                this.yStart--;
+                this.yEnd++;
+            }
             if (getYStart() >= yCentre) {
-                //Diminuer X et Augmenter Y
                 //System.out.println("En bas à droite");
-                this.xStart++;
-                this.xEnd--;
+                this.zoneGrad = 3;
+                for (int i = 1; i<= coefRotation; i++){
+                    this.xStart++;
+                    this.xEnd--;
+                }
 
             } else {
                 //System.out.println("En haut à droite");
-                //Augmenter tout
-                this.xStart--;
-                this.xEnd++;
+                this.zoneGrad = 4;
+                for (int i = 1; i <= coefRotation; i++) {
+                    this.xStart--;
+                    this.xEnd++;
+                }
             }
         }else {
-            this.yStart++;
-            this.yEnd--;
+            for(int i = 1; i <= coefRotation; i++) {
+                this.yStart++;
+                this.yEnd--;
+            }
             //Sinon
             //Si Ystart est sup à Ycentre
             if (getYStart() < yCentre) {
                 //System.out.println("En haut à gauche ");
-                //Diminuer tout
-                this.xStart--;
-                this.xEnd++;
-                //System.out.println("XStart: " + getXStart());
-                //System.out.println("YStart: " + getYStart());
+                this.zoneGrad = 1;
+                for(int i = 1; i <= coefRotation; i++) {
+                    this.xStart--;
+                    this.xEnd++;
+                }
                 // Sinon
             } else {
                 //System.out.println("En bas à gauche ");
-                this.xStart++;
-                this.xEnd--;
-
-                //Augmenter X, Diminuer Y
+                this.zoneGrad = 2;
+                for(int i = 1; i <= coefRotation; i++) {
+                    this.xStart++;
+                    this.xEnd--;
+                }
             }
+        }
+
+        if(this.zoneGrad != oldZoneGrad){
+            System.out.println("Ancienne Zone :" + oldZoneGrad);
+            System.out.println("xStart : " + this.xStart);
+            System.out.println("yStart : " + this.yStart);
         }
         //Debut et fin du gradient
         this.fondFill.setStart(this.xStart, this.yStart);
