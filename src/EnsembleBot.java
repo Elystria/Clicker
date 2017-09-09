@@ -1,7 +1,17 @@
 public class EnsembleBot {
-    public String nom; //Nom du bot
-    public int gainPPS; //Gain d'un bot
+    private String nom; //Nom du bot
+    private int gainPPS; //Gain d'un bot
+    private int nbPossedes;
 
+    public EnsembleBot(){
+        this("default", 0);
+    }
+
+    public EnsembleBot(String nom, int gain){
+        this.nom = nom;
+        this.gainPPS = gain;
+        this.nbPossedes = 0;
+    }
     public void afficher(){}
 
     /*Getters et Setters*/
@@ -30,5 +40,4 @@ public class EnsembleBot {
         this.nbPossedes = nbPossedes;
     }
 
-    public int nbPossedes; //Nombre de bot possedes
 }

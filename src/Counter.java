@@ -1,4 +1,3 @@
-//TODO : mettre des couleurs aleatoires pour le gradient
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
@@ -7,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -49,6 +49,15 @@ public class Counter {
     private float tailleActuelle; // la véritable taille finale du counter !
     private Rectangle fond; // Le rectangle de fond permettant de gérer la couleur du tesseract
     private GradientFill fondFill; // Pour remplissage du rectangle
+    private boolean sensContraste; //indique quelle couleur s'éclaircit et laquelle s'assombrit dans le tesseract
+
+    //Pour le gradient
+    private int xStart;
+    private int yStart;
+    private int xEnd;
+    private int yEnd;
+    private int coefRotation;//indique la vitesse de rotation
+    private int zoneGrad;
 
     /* Constructeurs */
 
@@ -88,6 +97,14 @@ public class Counter {
         this.xPos = 0;
         this.yPos = 0;
 
+        this.xStart = xPos;
+        this.yStart = yPos;
+        this.xEnd = (int) (xPos + (animation.getWidth() * tailleActuelle));
+        this.yEnd = (int) (yPos + (animation.getHeight() * tailleActuelle));
+        this.coefRotation = 1;
+        this.zoneGrad = 1;
+
+
         //Creation reclangle et fond
         this.fond = new Rectangle(xPos,
                 yPos,
@@ -96,11 +113,11 @@ public class Counter {
         this.fondFill = new GradientFill(xPos,
                 yPos,
                 Color.cyan,
-                xPos + (animation.getWidth() * tailleActuelle),
-                yPos + (animation.getHeight() * tailleActuelle),
+                xEnd,
+                yEnd,
                 Color.red);
+    }
 
-   }
 
 
     /* Méthodes */
@@ -120,16 +137,83 @@ public class Counter {
         // on récupère la position d'affichage
         this.xPos = windows.getWindowsWidth() / 2 - ((int) ((animation.getWidth() * scale) / 2));
         this.yPos = windows.getWindowsHeight() / 2 - ((int) ((animation.getHeight() * scale) / 2));
-
-        // on recalcul le fond puis on l'affiche
+        //Premier affichage
+        if(this.xStart == 0){
+            this.xStart = windows.getWindowsWidth() / 2;
+            this.yStart = yPos;
+            this.xEnd = this.xStart;
+            this.yEnd = this.yStart + (int) (animation.getHeight() * scale);
+            this.fondFill.setStart(xStart, yStart);
+            this.fondFill.setEnd(xEnd, yEnd);
+        }
+        // on recalcule le fond puis on l'affiche
         this.fond.setBounds(this.xPos,
                 this.yPos,
                 animation.getWidth() * scale,
                 animation.getHeight() * scale);
-        this.fondFill.setStart(this.xPos, this.yPos);
-        this.fondFill.setEnd(this.xPos+(animation.getWidth() * scale),
-                             this.yPos+(animation.getHeight() * scale));
-        g.fill(this.getFond(), this.getFondFill());
+
+        //On calcule et on fait tourner le gradient
+        int xCentre = getXCentre();
+        int yCentre = getYCentre();
+        int oldZoneGrad = this.zoneGrad;
+        if (getXStart() >= xCentre){
+            //Si Ystart est sup a Ycentre
+            for (int i = 1; i<= coefRotation; i++){
+                this.yStart--;
+                this.yEnd++;
+            }
+            if (getYStart() >= yCentre) {
+                //System.out.println("En bas à droite");
+                this.zoneGrad = 3;
+                for (int i = 1; i<= coefRotation; i++){
+                    this.xStart++;
+                    this.xEnd--;
+                }
+
+            } else {
+                //System.out.println("En haut à droite");
+                this.zoneGrad = 4;
+                for (int i = 1; i <= coefRotation; i++) {
+                    this.xStart--;
+                    this.xEnd++;
+                }
+            }
+        }else {
+            for(int i = 1; i <= coefRotation; i++) {
+                this.yStart++;
+                this.yEnd--;
+            }
+            //Sinon
+            //Si Ystart est sup à Ycentre
+            if (getYStart() < yCentre) {
+                //System.out.println("En haut à gauche ");
+                this.zoneGrad = 1;
+                for(int i = 1; i <= coefRotation; i++) {
+                    this.xStart--;
+                    this.xEnd++;
+                }
+                // Sinon
+            } else {
+                //System.out.println("En bas à gauche ");
+                this.zoneGrad = 2;
+                for(int i = 1; i <= coefRotation; i++) {
+                    this.xStart++;
+                    this.xEnd--;
+                }
+            }
+        }
+
+        if(this.zoneGrad != oldZoneGrad){
+            System.out.println("Ancienne Zone :" + oldZoneGrad);
+            System.out.println("xStart : " + this.xStart);
+            System.out.println("yStart : " + this.yStart);
+        }
+        //Debut et fin du gradient
+        this.fondFill.setStart(this.xStart, this.yStart);
+        this.fondFill.setEnd(this.xEnd,
+                             this.yEnd);
+
+       g.fill(this.getFond(), this.getFondFill());
 
         // on affiche l'animation
         this.animation.draw(xPos, yPos, animation.getWidth() * scale, animation.getHeight()*scale);
@@ -206,6 +290,7 @@ public class Counter {
         }
     }
 
+
     /* Change la couleur du tesseract */
     public void setCouleurTess(Color coulDebut, Color coulFin){
         this.getFondFill().setStartColor(coulDebut);
@@ -223,13 +308,23 @@ public class Counter {
             //Changer la couleur du tesseract de manière aleatoire;
             Random rdn = new Random();
             Color colorStart = new Color(rdn.nextInt(256), rdn.nextInt(256), rdn.nextInt(256));
-            Color colorEnd = new Color(rdn.nextInt(256), rdn.nextInt(256), rdn.nextInt(256));
+            Color colorEnd = inverseColor(colorStart);
 
             this.setCouleurTess(colorStart, colorEnd);
 
             // on ajoute un bouncer !
             this.bouncers.add(bouncerStart);
         }
+    }
+
+    /* Renvoie l'opposé de la couelur actuelle */
+    public Color inverseColor(Color color){
+        int r = color.getRed();
+        int v = color.getGreen();
+        int b = color.getBlue();
+
+        //Inverser les composants RVB pour donner la couleur opposée
+        return (new Color(255-r, 255-v, 255-b));
     }
 
 
@@ -289,5 +384,30 @@ public class Counter {
 
     public float getTailleActuelle() {
         return tailleActuelle;
+    }
+
+    /*Renvoie l'abscisse du centre de l'image */
+    public int getXCentre(){
+        int taille = (int) (animation.getWidth()*getTailleActuelle());
+        return getxPos()+taille/2;
+    }
+
+    /* Renvoie l'ordonnée du centre de l'image */
+    public int getYCentre(){
+        int taille = (int) (animation.getHeight()*getTailleActuelle());
+        return getyPos()+taille/2;
+    }
+
+    public int getXStart(){
+        return (int) this.getFondFill().getStart().getX();
+    }
+    public int getYStart() {
+        return (int) this.getFondFill().getStart().getY();
+    }
+    public int getXEnd() {
+        return (int) this.getFondFill().getEnd().getX();
+    }
+    public int getYEnd() {
+        return (int) this.getFondFill().getEnd().getY();
     }
 }
