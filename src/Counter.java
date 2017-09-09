@@ -208,18 +208,6 @@ public class Counter {
            }
        }
 
-
-
-        //Changement passif de couleur
-
-        /*if (sensContraste) {
-           this.fondFill.setStartColor(this.fondFill.getStartColor().brighter(0.01f));
-           this.fondFill.setEndColor(this.fondFill.getEndColor().darker(0.01f));
-        }else {
-            this.fondFill.setStartColor(this.fondFill.getStartColor().darker(0.01f));
-            this.fondFill.setEndColor(this.fondFill.getEndColor().brighter(0.01f));
-        }*/
-
     }
 
 
