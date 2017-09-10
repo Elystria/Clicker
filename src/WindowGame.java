@@ -19,8 +19,8 @@ public class WindowGame extends BasicGame {
     /* Méthodes */
 
     @Override
-    public void init(GameContainer container) throws SlickException {
-        this.container = container;
+    public void init(GameContainer gc) throws SlickException {
+        this.container = gc;
 
         // on initialise la partie
         partie = new Partie();
@@ -40,15 +40,15 @@ public class WindowGame extends BasicGame {
    }
 
     @Override
-    public void render(GameContainer container, Graphics g) throws SlickException {
+    public void render(GameContainer gc, Graphics g) throws SlickException {
         // affichage du counter
-        partie.getCounter().afficher(g, this, partie.getCounter().getTailleActuelle());
+        partie.getCounter().afficher(g, this, gc, partie.getCounter().getTailleActuelle());
         partie.getShop().afficher();
     }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
-       partie.getCounter().update();
+       partie.getCounter().update(delta);
        partie.getShop().update();
     }
 
