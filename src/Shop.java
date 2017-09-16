@@ -3,6 +3,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.w3c.dom.css.Rect;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import static java.lang.Math.min;
+import static java.lang.Math.nextAfter;
 
 public class Shop {
 
@@ -22,7 +24,8 @@ public class Shop {
     private List<ProduitUpgrade> produitsUpgrades; // Liste des produits d'Upgrades que contient la boutique;
 
     // Affichage
-    private Rectangle pos;
+    // Background
+    private Rectangle pos; // la position du shop
     private int sizeRect; // taille en pixel des carrés de subdivision du background du shop
     private List<Rectangle> quadrillage; // la quadrillage du background
     private List<Color> quadrillageColor; // les couleurs des carrés du quadrillage du background
@@ -31,6 +34,11 @@ public class Shop {
     private int lastBackground; // la dernière fois qu'on a mis à jour le background
     private int backgroundFreq; // la fréquence à laquelle on met à jour le background
 
+    // Entete
+    private Rectangle enteteFond; // le fond de l'entête
+    private List<String> catchPhrases; // les phrases d'accroche du shop !
+    private int currentPhrase; // la catchphrase courante
+
     /* Initialisation du shop */
     public Shop(WindowGame windows) throws SlickException {
         // Calcul de la position
@@ -38,6 +46,9 @@ public class Shop {
 
         // Création du Background
         this.initBackground();
+
+        // Création de l'Entête
+        this.initEntete();
 
         // Créer tous les produits
         this.produitsBots = initProduitsBots();
@@ -74,6 +85,25 @@ public class Shop {
         this.backgroundFreq = 100;
     }
 
+    private void initEntete() {
+        float x = pos.getX();
+        float y = pos.getY();
+        float w = pos.getWidth();
+        float h = pos.getHeight() / 6;
+        this.enteteFond = new Rectangle(x, y, w, h);
+
+        this.catchPhrases = new ArrayList<String>();
+        this.catchPhrases.add("Bienvenue dans le shop !");
+        this.catchPhrases.add("Vous pouvez gaspiller vos pixels ici !");
+        this.catchPhrases.add("La meilleure stratégie, c'est celle que tu n'auras pas choisie !");
+        this.catchPhrases.add("Toujours acheter des Upgrades, jamais les bots, sinon c'est pas synergique !");
+        this.catchPhrases.add("En vrai, tu paries combien qu'il y a un succes pour avoir acheter 1 000 000 points ?");
+        this.catchPhrases.add("Je parie que tu vas acheter un truc.");
+        this.catchPhrases.add("Pile je gagne, Face tu perds. OK ?");
+
+        this.currentPhrase = 0;
+    }
+
     private List<ProduitBot> initProduitsBots() throws SlickException {
         List<ProduitBot> p = new ArrayList<ProduitBot>();
 
@@ -97,6 +127,7 @@ public class Shop {
         // afficher le background du shop
         this.renderBackground(g);
         // afficher l'entête du shop
+        this.renderEntete(g);
         // afficher les produitsUpgrades disponibles en magasin
         // afficher les produitsBots disponibles en magasin
     }
@@ -107,6 +138,52 @@ public class Shop {
             g.setColor(quadrillageColor.get(i));
             g.fill(quadrillage.get(i));
         }
+    }
+
+    private void renderEntete(Graphics g) {
+        // affichage du fond
+        g.setColor(new Color(0, 0, 0, 175));
+        g.fill(enteteFond);
+
+        // affichage du mot shop
+        String s = "SHOP";
+        Font font = g.getFont();
+        float xString = enteteFond.getX() + enteteFond.getWidth() / 2 - font.getWidth(s) / 2;
+        float yString = enteteFond.getY() + enteteFond.getHeight() * 0.3f - font.getHeight(s) / 2;
+        g.setColor(new Color(255, 255, 255));
+        g.setFont(font);
+        g.drawString(s, xString, yString);
+
+        // affichage d'une punch line
+        String cp = catchPhrases.get(currentPhrase);
+        boolean onADecoupe = false;
+        while(font.getWidth(cp) > enteteFond.getWidth()) {
+            onADecoupe = true;
+            int i = 0;
+            String cpFirst = "";
+            while(i < cp.length() && font.getWidth(cp.substring(0, i)) < enteteFond.getWidth() - 20) {
+                cpFirst = cp.substring(0, i);
+                i++;
+            }
+            if(i < cp.length() - 1) {
+                i--;
+                cp = cp.substring(i, cp.length());
+            }
+
+            // On affiche la première partie de la chaine
+            xString = enteteFond.getX() + enteteFond.getWidth() / 2 - font.getWidth(cpFirst) / 2;
+            yString = yString + font.getHeight(cpFirst) * 1.2f;
+            g.drawString(cpFirst, xString, yString);
+        }
+
+        // On affiche la fin de la chaine
+        xString = enteteFond.getX() + enteteFond.getWidth() / 2 - font.getWidth(cp) / 2;
+        if(onADecoupe) {
+            yString = yString + font.getHeight(cp) * 1.2f;
+        } else {
+            yString = enteteFond.getY() + enteteFond.getHeight() * 0.65f - font.getHeight(cp) / 2;
+        }
+        g.drawString(cp, xString, yString);
     }
 
     /* Renvoie une couleur aléatoire d'une certaine saturation */
@@ -250,5 +327,15 @@ public class Shop {
 
         java.awt.Color c = java.awt.Color.getHSBColor(hue, backgroundSaturation, backgroundLuminosite);
         return new Color(c.getRed(), c.getGreen(), c.getBlue());
+    }
+
+    public void mouseClicked(int x, int y) {
+        Random rdn = new Random();
+        // Si on est dans l'entête
+        if(x > enteteFond.getX() && x < enteteFond.getX() + enteteFond.getWidth()
+                && y > enteteFond.getY() && y < enteteFond.getY() + enteteFond.getHeight()) {
+            // on change de catchPhrase !
+            currentPhrase = rdn.nextInt(catchPhrases.size());
+        }
     }
 }

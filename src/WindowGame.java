@@ -37,6 +37,7 @@ public class WindowGame extends BasicGame {
    public void mouseClicked(int button, int x, int y, int clickCount){
         //Clic sur le counter
        this.partie.getCounter().mouseClicked(x, y);
+       this.partie.getShop().mouseClicked(x, y);
    }
 
     @Override
