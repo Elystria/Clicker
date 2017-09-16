@@ -1,3 +1,7 @@
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +21,7 @@ public class Shop {
         List<ProduitBot> p = new ArrayList<ProduitBot>();
 
         // Créer tous les produits que l'on pourra acheter
-        p.add(new ProduitBot(new EnsembleBot("item1", 10), 10));
+        p.add(new ProduitBot(new EnsembleBot("item1", 10), 10, new Image("resources/shop/prod_shop_1.png")));
 
         return p;
     }
@@ -35,8 +39,8 @@ public class Shop {
     public void render(){
         // afficher le background du shop
         // afficher l'entête du shop
-        // afficher les produitsUpgrades
-        // afficher les produitsBots
+        // afficher les produitsUpgrades disponibles en magasin
+        // afficher les produitsBots disponibles en magasin
     }
 
     /* Mise à jour du shop */

@@ -1,19 +1,22 @@
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+
 public abstract class Produit {
     private int prixActuel;
     private Disponibilite disponibilite;
+    private Image illustration;
 
     /* Constructeurs */
-    public Produit(int prixActuel){
+    public Produit(int prixActuel, Image image){
         this.prixActuel = prixActuel;
-        this.disponibilite = new DisponibiliteFalse(){
-        };
+        this.disponibilite = new DisponibiliteFalse();
+        this.illustration = image;
     }
 
     //Un produit par défaut
     public Produit(){
         this.prixActuel = 0;
-        this.disponibilite = new DisponibiliteFalse(){
-        };
+        this.disponibilite = new DisponibiliteFalse();
     }
 
     /* Méthodes */
@@ -27,6 +30,7 @@ public abstract class Produit {
     }
 
     public void afficher(){
+        this.illustration.draw();
 
     }
 
@@ -47,5 +51,13 @@ public abstract class Produit {
 
     public Disponibilite getDisponibilite() {
         return disponibilite;
+    }
+
+    public Image getIllustration() {
+        return illustration;
+    }
+
+    public void setIllustration(Image illustration) {
+        this.illustration = illustration;
     }
 }
