@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 
 public class Main {
 
-    private final static int FRAME_RATE = 120;
+    public final static int FRAME_RATE = 120;
 
     public static void main (String[] args) throws SlickException {
 

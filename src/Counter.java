@@ -1,19 +1,12 @@
-
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.fills.GradientFill;
-import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.gui.TextField;
 
-import java.awt.*;
-import java.awt.FontMetrics;
 import java.util.List;
 import java.util.Random;
 import java.util.*;
@@ -41,6 +34,8 @@ public class Counter {
     private float tailleVariation; // sa variation de taille maximum
     private float tailleMin, tailleMax; // les variations extremums de taille
     private boolean tailleCroissante; // indique si la taille est en train de grandir
+    private int tailleFreq; // indique à quelle fréquence la taille varie
+    private int lastTailleVariation; // indique quand pour la dernière fois la taille a variée
     private List<Float> bouncers; // les petites augmentations de tailles quand un joueur clique sur le counter
     private float bouncerStart; // l'amplitude des bouncers
     private float bouncerDecrease; // la vitesse de disparition des bouncers
@@ -62,7 +57,7 @@ public class Counter {
     /* Constructeurs */
 
     public Counter() throws SlickException {
-        this(0, 1, 1, 2.0f);
+        this(0, 0, 1, 2.0f);
     }
 
 
@@ -82,10 +77,12 @@ public class Counter {
         }
         this.size = size;
         this.taille = size;
-        this.tailleVariation = size / 2000f;
+        this.tailleVariation = size / 200f;
         this.tailleMax = size + size / 20f;
         this.tailleMin = size - size / 20f;
         this.tailleCroissante = true;
+        this.tailleFreq = 1000/Main.FRAME_RATE;
+        this.lastTailleVariation = 0;
         this.bouncers = new ArrayList<Float>();
         this.bouncerStart = size / 4f;
         this.bouncerDecrease = size / 60f;
@@ -101,7 +98,7 @@ public class Counter {
         this.yStart = yPos;
         this.xEnd = (int) (xPos + (animation.getWidth() * tailleActuelle));
         this.yEnd = (int) (yPos + (animation.getHeight() * tailleActuelle));
-        this.coefRotation = 1;
+        this.coefRotation = 3;
         this.zoneGrad = 1;
 
 
@@ -119,7 +116,6 @@ public class Counter {
     }
 
 
-
     /* Méthodes */
 
     /* Met à jour le nombre total de pixels gagnés grace au clic */
@@ -133,10 +129,26 @@ public class Counter {
     }
 
     /* Affiche le counter à l'écran */
-    public void afficher(Graphics g, WindowGame windows, GameContainer gc, float scale) {
+    public void render(Graphics g, WindowGame windows, GameContainer gc, float scale) {
         // on récupère la position d'affichage
+        this.getPositionAffichage(windows, scale);
+
+        // On affiche le background
+        this.renderBackground(g, windows, scale);
+
+        // on affiche l'animation
+        this.renderAnimation(scale);
+
+        // on affiche le nombre de pixels juste au dessus
+        this.renderText(g, windows);
+   }
+
+    private void getPositionAffichage(WindowGame windows, float scale) {
         this.xPos = windows.getWindowsWidth() / 2 - ((int) ((animation.getWidth() * scale) / 2));
         this.yPos = windows.getWindowsHeight() / 2 - ((int) ((animation.getHeight() * scale) / 2));
+    }
+
+    private void renderBackground(Graphics g, WindowGame windows, float scale) {
         //Premier affichage
         if(this.xStart == 0){
             this.xStart = windows.getWindowsWidth() / 2;
@@ -146,6 +158,7 @@ public class Counter {
             this.fondFill.setStart(xStart, yStart);
             this.fondFill.setEnd(xEnd, yEnd);
         }
+
         // on recalcule le fond puis on l'affiche
         this.fond.setBounds(this.xPos,
                 this.yPos,
@@ -211,58 +224,61 @@ public class Counter {
         //Debut et fin du gradient
         this.fondFill.setStart(this.xStart, this.yStart);
         this.fondFill.setEnd(this.xEnd,
-                             this.yEnd);
+                this.yEnd);
 
-       g.fill(this.getFond(), this.getFondFill());
+        g.fill(this.getFond(), this.getFondFill());
+    }
 
-        // on affiche l'animation
+    private void renderAnimation(float scale) {
         this.animation.draw(xPos, yPos, animation.getWidth() * scale, animation.getHeight()*scale);
+    }
 
-        // on affiche le nombre de pixels juste au dessus
-        // METHODE QUI NE MARCHE PAS !!!
-        /*
-        try {
-            java.awt.Font javaFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT,
-                    org.newdawn.slick.util.ResourceLoader.getResourceAsStream("resources/fonts/pixelmix/pixelmix.ttf"));
-            javaFont = javaFont.deriveFont(java.awt.Font.PLAIN, 12.f);
-            org.newdawn.slick.UnicodeFont uniFont = new org.newdawn.slick.UnicodeFont(javaFont);
-            uniFont.addAsciiGlyphs();
-            uniFont.getEffects().add(new ColorEffect(java.awt.Color.white));
-            uniFont.loadGlyphs();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
-
+    private void renderText(Graphics g, WindowGame windows) {
         String s = "Pixels : " + nbPixels;
         Font font = g.getFont();
         int xString = windows.getWindowsWidth() / 2 - font.getWidth(s) / 2;
         int yString = windows.getWindowsHeight() / 2 - font.getHeight(s) * 2 - (int) (animation.getHeight() * size + size / 20) / 2;
-        g.setColor(new Color(175, 175, 175));
+        g.setColor(new Color(255, 255, 255));
         g.setFont(font);
         g.drawString(s, xString, yString);
+
     }
 
     /* S'occupe de mettre à jour le counter */
     public void update(int delta) {
-        // mise à jour de la taille du counter
-        if(tailleCroissante) {
-            if(taille < tailleMax) {
-                taille += tailleVariation;
-            } else {
-                taille -= tailleVariation;
-                tailleCroissante = false;
-            }
-        } else {
-            if(taille > tailleMin) {
-                taille -= tailleVariation;
-            } else {
-                taille += tailleVariation;
-                tailleCroissante = true;
-            }
-        }
+        // mise à jour de la taille initiale du counter
+        this.updateTaille(delta);
 
-        // On fait bouncer le counter
+        // Mise à jour des bouncers
+        this.updateBouncers(delta);
+
+        // On incrémente le counter toutes les secondes
+        this.updatePixels(delta);
+    }
+
+    private void updateTaille(int delta) {
+        lastTailleVariation += delta;
+        if(lastTailleVariation > tailleFreq) {
+            if (tailleCroissante) {
+                if (taille < tailleMax) {
+                    taille += tailleVariation;
+                } else {
+                    taille -= tailleVariation;
+                    tailleCroissante = false;
+                }
+            } else {
+                if (taille > tailleMin) {
+                    taille -= tailleVariation;
+                } else {
+                    taille += tailleVariation;
+                    tailleCroissante = true;
+                }
+            }
+            lastTailleVariation = 0;
+        }
+    }
+
+    private void updateBouncers(int delta) {
         tailleActuelle = taille;
         lastDecrease += delta;
         for (int i = 0; i < bouncers.size(); i++) {
@@ -281,8 +297,9 @@ public class Counter {
         if(lastDecrease > decreaseFrequence) {
             lastDecrease = 0;
         }
+    }
 
-        // On incrémente le counter toutes les secondes
+    private void updatePixels(int delta) {
         lastPps += delta;
         if(lastPps > freqPps) {
             nbPixels += pps;
@@ -300,8 +317,6 @@ public class Counter {
     /* Réagit lors du clic d'un utilisateur
      * x et y : int coordonnées du clic  */
     public void mouseClicked(int x, int y){
-        int xPos = this.getxPos();
-        int yPos = this.getyPos();
         //Vérifier la localisation du clic
         if (x>=xPos && x<=xPos + (getAnimation().getHeight() * tailleActuelle)
             && y>=yPos && y<=yPos + getAnimation().getWidth() * tailleActuelle){
@@ -312,8 +327,11 @@ public class Counter {
 
             this.setCouleurTess(colorStart, colorEnd);
 
-            // on ajoute un bouncer !
+            // ajouter un bouncer
             this.bouncers.add(bouncerStart);
+
+            // ajouter des pixels
+            this.activer();
         }
     }
 

@@ -3,21 +3,46 @@ import java.util.List;
 
 public class Shop {
 
-    List Produits = new ArrayList<Produit>(); //Liste des produits que contient la boutique;
+    private List<ProduitBot> produitsBots; // Liste des produits de Bots que contient la boutique;
+    private List<ProduitUpgrade> produitsUpgrades; // Liste des produits d'Upgrades que contient la boutique;
 
     /* Initialisation du shop */
     public Shop(){
-        //Créer tous les produits que l'on pourra acheter
-       Produit item1 = new ProduitBot(new EnsembleBot("item1", 10), 10);
-
-       //Les ajouter à la liste de produits
-       Produits.add(item1);
-
+        // Créer tous les produits
+        this.produitsBots = initProduitsBots();
+        this.produitsUpgrades = initProduitsUpgrades();
     }
 
+    private List<ProduitBot> initProduitsBots() {
+        List<ProduitBot> p = new ArrayList<ProduitBot>();
+
+        // Créer tous les produits que l'on pourra acheter
+        p.add(new ProduitBot(new EnsembleBot("item1", 10), 10));
+
+        return p;
+    }
+
+    private List<ProduitUpgrade> initProduitsUpgrades() {
+        List<ProduitUpgrade> p = new ArrayList<ProduitUpgrade>();
+
+        // Créer tous les produits que l'on pourra acheter
+        //p.add(new ProduitUpgrade());
+
+        return p;
+    }
 
     /* Affichage du shop */
-    public void afficher(){
-        //afficher les produits disponibles en magasin
+    public void render(){
+        // afficher le background du shop
+        // afficher l'entête du shop
+        // afficher les produitsUpgrades
+        // afficher les produitsBots
+    }
+
+    /* Mise à jour du shop */
+    public void update() {
+        // mise à jour du background
+        // mise à jour des produitsBots
+        // mise à jour des produitsUpgrades
     }
 }
