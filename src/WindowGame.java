@@ -43,13 +43,13 @@ public class WindowGame extends BasicGame {
     public void render(GameContainer gc, Graphics g) throws SlickException {
         // affichage du counter
         partie.getCounter().render(g, this, gc, partie.getCounter().getTailleActuelle());
-        partie.getShop().render();
+        partie.getShop().render(g);
     }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
        partie.getCounter().update(delta);
-       partie.getShop().update();
+       partie.getShop().update(delta);
     }
 
     /* Getteurs et Setteurs */

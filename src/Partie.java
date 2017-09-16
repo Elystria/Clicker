@@ -12,7 +12,6 @@ public class Partie {
     private Counter counter;
     private WindowGame windows;
     private Shop shop;
-//    private Shop shop;
 //    private Inventaire inventaire;
 //    private Events events;
 
@@ -21,7 +20,7 @@ public class Partie {
     public Partie() throws SlickException {
         this.windows = windows;
         this.counter = new Counter();
-        this.shop = new Shop();
+        this.shop = new Shop(windows);
 //        this.shop = new Shop();
 //        this.inventaire = new Inventaire();
 //        this.events = new Events();
@@ -38,8 +37,7 @@ public class Partie {
     public Shop getShop() {
         return shop;
     }
-//    }
-//
+
 //    public Inventaire getInventaire() {
 //        return inventaire;
 //    }
