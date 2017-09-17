@@ -1,10 +1,7 @@
 import org.lwjgl.Sys;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Font;
+import org.newdawn.slick.*;
 import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.w3c.dom.css.Rect;
 
@@ -128,7 +125,7 @@ public class Shop {
     }
 
     /* Affichage du shop */
-    public void render(Graphics g){
+    public void render(Graphics g) throws SlickException {
         // afficher le background du shop
         this.renderBackground(g);
         // afficher l'entête du shop
@@ -146,14 +143,21 @@ public class Shop {
         }
     }
 
-    private void renderEntete(Graphics g) {
+    private void renderEntete(Graphics g) throws SlickException {
         // affichage du fond
         g.setColor(new Color(0, 0, 0, 175));
         g.fill(enteteFond);
 
         // affichage du mot shop
         String s = "SHOP";
-        Font font = g.getFont();
+        UnicodeFont font = new UnicodeFont("resources/fonts/pixelmix/pixelmix.ttf", 20, false, false);
+
+        font.addAsciiGlyphs();
+        font.addGlyphs(400, 600);
+        font.getEffects().add(new ColorEffect());
+        font.loadGlyphs();
+
+        //Font font = g.getFont();
         float xString = enteteFond.getX() + enteteFond.getWidth() / 2 - font.getWidth(s) / 2;
         float yString = enteteFond.getY() + enteteFond.getHeight() * 0.3f - font.getHeight(s) / 2;
         g.setColor(new Color(255, 255, 255));
