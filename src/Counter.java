@@ -3,10 +3,16 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
+import java.awt.*;
+//import java.awt.Font;
+import java.awt.FontMetrics;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.*;
@@ -129,7 +135,7 @@ public class Counter {
     }
 
     /* Affiche le counter à l'écran */
-    public void render(Graphics g, WindowGame windows, GameContainer gc, float scale) {
+    public void render(Graphics g, WindowGame windows, GameContainer gc, float scale) throws SlickException {
         // on récupère la position d'affichage
         this.getPositionAffichage(windows, scale);
 
@@ -233,7 +239,8 @@ public class Counter {
         this.animation.draw(xPos, yPos, animation.getWidth() * scale, animation.getHeight()*scale);
     }
 
-    private void renderText(Graphics g, WindowGame windows) {
+    private void renderText(Graphics g, WindowGame windows) throws SlickException {
+        /*
         String s = "Pixels : " + nbPixels;
         Font font = g.getFont();
         int xString = windows.getWindowsWidth() / 2 - font.getWidth(s) / 2;
@@ -241,8 +248,48 @@ public class Counter {
         g.setColor(new Color(255, 255, 255));
         g.setFont(font);
         g.drawString(s, xString, yString);
+        */
+        /* TESTS SUR LES FONDS */
+        /* GraphicsEnvironment ge =
+                GraphicsEnvironment.getLocalGraphicsEnvironment();
+        try {
 
+            ge.registerFont(java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("resources/fonts/pixelhole/pixelhole.ttf")));
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String[] fonts = ge.getAvailableFontFamilyNames();
+        for (String font : fonts) {
+            System.out.println(font);
+            if (font.equals("Pixelhole")){
+                String fontNbPixels = font;
+            }
+
+        } */
+
+        String s = "Pixels : " + nbPixels;
+        //Font pixelFont = g.getFont();
+        UnicodeFont pixelFont = new UnicodeFont("resources/fonts/pixelhole/pixelhole.ttf", 55, false, false);
+
+        pixelFont.addAsciiGlyphs();
+        pixelFont.addGlyphs(400, 600);
+        pixelFont.getEffects().add(new ColorEffect());
+        pixelFont.loadGlyphs();
+
+        int xString = windows.getWindowsWidth() / 2 - pixelFont.getWidth(s) / 2;
+        int yString = windows.getWindowsHeight() / 2 - pixelFont.getHeight(s) * 2 - (int) (animation.getHeight() * size + size / 20) / 2;
+        //g.setColor(new Color(175, 175, 175));
+        g.setFont(pixelFont);
+        g.drawString(s, xString, yString);
+
+       /* FIN DES TESTS */
     }
+
+
+
 
     /* S'occupe de mettre à jour le counter */
     public void update(int delta) {
