@@ -1,3 +1,5 @@
+//TODO mettre la creation de police dans les constructeurs
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
