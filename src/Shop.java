@@ -5,6 +5,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.w3c.dom.css.Rect;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -51,6 +52,10 @@ public class Shop {
         // Création de l'Entête
         this.initEntete();
 
+        // Création des Produits
+        this.produitsBots = initProduitsBots();
+        this.produitsUpgrades = initProduitsUpgrades();
+
         // Créer tous les produits
         this.shopFond = initBGFond();
         this.produitsBots = initProduitsBots();
@@ -58,9 +63,9 @@ public class Shop {
     }
 
     private Rectangle initPos(WindowGame windows) {
-        float x = windows.getWindowsWidth() * 2 / 3;
+        float x = windows.getWindowsWidth() * 0.72f;
         float y = 0;
-        float w = windows.getWindowsWidth() * 1 / 3;
+        float w = windows.getWindowsWidth() * 0.28f;
         float h = windows.getWindowsHeight();
         return new Rectangle(x, y, w, h);
     }
@@ -99,7 +104,7 @@ public class Shop {
         this.catchPhrases.add("Vous pouvez gaspiller vos pixels ici !");
         this.catchPhrases.add("La meilleure stratégie, c'est celle que tu n'auras pas choisie !");
         this.catchPhrases.add("Toujours acheter des Upgrades, jamais les bots, sinon c'est pas synergique !");
-        this.catchPhrases.add("En vrai, tu paries combien qu'il y a un succes pour avoir acheter 1 000 000 points ?");
+        this.catchPhrases.add("En vrai, tu paries combien qu'il y a un succes pour avoir acheté 1 000 Points ?");
         this.catchPhrases.add("Je parie que tu vas acheter un truc.");
         this.catchPhrases.add("Pile je gagne, Face tu perds. OK ?");
 
@@ -122,7 +127,7 @@ public class Shop {
         p.add(new ProduitBot(new EnsembleBot("item1", 10), 10, new Image("resources/shop/point_shop.png")));
         p.add(new ProduitBot(new EnsembleBot("item2", 10), 10, new Image("resources/shop/droite_shop.png")));
         p.add(new ProduitBot(new EnsembleBot("item3", 10), 10, new Image("resources/shop/triangle_shop.png")));
-        p.add(new ProduitBot(new EnsembleBot("item4", 10), 10, new Image("resources/shop/carre_shop.png")));
+
 
         return p;
     }
@@ -145,6 +150,7 @@ public class Shop {
         // afficher les produitsUpgrades disponibles en magasin
         // afficher les produitsBots disponibles en magasin
         this.renderProduits(g);
+        produitsBots.get(0).getIllustration().draw();
     }
 
     /* Le Background du shop est un quadrillage de carrés de couleurs qui changent au fur et à mesure du temps */
@@ -336,25 +342,26 @@ public class Shop {
         // position de la couleur
         int x = indice % nbLargeur;
         int y = indice / nbLargeur;
+        int i;
 
         // couleur du voisin du haut
         if(y > 0) {
-            int i = (y-1) * nbLargeur + x;
+            i = (y-1) * nbLargeur + x;
             list.add(quadrillageColor.get(i));
         }
         // couleur du voisin du bas
         if(y < nbHauteur - 1) {
-            int i = (y + 1) * nbLargeur + x;
+            i = (y + 1) * nbLargeur + x;
             list.add(quadrillageColor.get(i));
         }
         // couleur du voisin de gauche
         if(x > 0) {
-            int i = y * nbLargeur + x - 1;
+            i = y * nbLargeur + x - 1;
             list.add(quadrillageColor.get(i));
         }
         // couleur du voisin de droite
         if(x < nbLargeur - 1) {
-            int i = y * nbLargeur + x + 1;
+            i = y * nbLargeur + x + 1;
             list.add(quadrillageColor.get(i));
         }
 
@@ -394,7 +401,24 @@ public class Shop {
         if(x > enteteFond.getX() && x < enteteFond.getX() + enteteFond.getWidth()
                 && y > enteteFond.getY() && y < enteteFond.getY() + enteteFond.getHeight()) {
             // on change de catchPhrase !
-            currentPhrase = rdn.nextInt(catchPhrases.size());
+            int old = currentPhrase;
+            while(currentPhrase == old) {
+                currentPhrase = rdn.nextInt(catchPhrases.size());
+            }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
