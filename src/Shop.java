@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static java.lang.Math.abs;
 import static java.lang.Math.min;
 import static java.lang.Math.nextAfter;
 
@@ -37,6 +38,9 @@ public class Shop {
     private List<String> catchPhrases; // les phrases d'accroche du shop !
     private int currentPhrase; // la catchphrase courante
 
+    //Partie principale
+    private Rectangle shopFond; //le fond de la partie principale du shop
+
     /* Initialisation du shop */
     public Shop(WindowGame windows) throws SlickException {
         // Calcul de la position
@@ -53,6 +57,7 @@ public class Shop {
         this.produitsUpgrades = initProduitsUpgrades();
 
         // Créer tous les produits
+        this.shopFond = initBGFond();
         this.produitsBots = initProduitsBots();
         this.produitsUpgrades = initProduitsUpgrades();
     }
@@ -106,11 +111,23 @@ public class Shop {
         this.currentPhrase = 0;
     }
 
+    private Rectangle initBGFond(){
+        //Creation du rectangle dans lequel on affiche les objets
+            int x = (int) pos.getX();
+            int y = (int) ( pos.getY() + enteteFond.getHeight());
+            int w = (int) pos.getWidth();
+            int h = (int) (pos.getHeight() - enteteFond.getWidth());
+        return new Rectangle(x, y, w, h);
+    }
+
     private List<ProduitBot> initProduitsBots() throws SlickException {
         List<ProduitBot> p = new ArrayList<ProduitBot>();
 
         // Créer tous les produits que l'on pourra acheter
-        p.add(new ProduitBot(new EnsembleBot("item1", 10), 10, "resources/shop/prod_shop_1.png"));
+        p.add(new ProduitBot(new EnsembleBot("item1", 10), 10, new Image("resources/shop/point_shop.png")));
+        p.add(new ProduitBot(new EnsembleBot("item2", 10), 10, new Image("resources/shop/droite_shop.png")));
+        p.add(new ProduitBot(new EnsembleBot("item3", 10), 10, new Image("resources/shop/triangle_shop.png")));
+
 
         return p;
     }
@@ -132,6 +149,7 @@ public class Shop {
         this.renderEntete(g);
         // afficher les produitsUpgrades disponibles en magasin
         // afficher les produitsBots disponibles en magasin
+        this.renderProduits(g);
         produitsBots.get(0).getIllustration().draw();
     }
 
@@ -140,6 +158,42 @@ public class Shop {
         for(int i = 0; i < quadrillage.size(); i++) {
             g.setColor(quadrillageColor.get(i));
             g.fill(quadrillage.get(i));
+        }
+    }
+    
+    private void renderProduits(Graphics g){
+        int x = (int) this.shopFond.getX();
+        int y = (int) this.shopFond.getY();
+        boolean pair = true;
+        int transpDebut = 0;
+        int transpFin = 255;
+        int nbProduit = produitsBots.size();
+        int scaleTransp = abs(transpFin - transpDebut)/(nbProduit-1);
+
+        int transp = transpDebut;
+        for (Produit produit : produitsBots ) {
+
+            Rectangle fondProduit = new Rectangle(x, y,
+                    this.shopFond.getWidth(), produit.getIllustration().getHeight());
+            // AFFICHAGE 1 : Rayures fond shop
+            /* // Afficher le rectangle de fond
+            if (pair){
+                g.setColor(new Color(255, 255, 255, 150));
+                pair = false;
+            } else {
+                g.setColor(new Color (255, 255,255, 100));
+                pair = true;
+            }*/
+
+            //AFFICHAGE 2 : Degradé de niveaux de gris
+            g.setColor(new Color(255,255,255, transp));
+            g.fill(fondProduit);
+            //Afficher l'image
+            produit.getIllustration().draw(x,y);
+            //Calculer la prochaine position de l'image
+            y = y + produit.getIllustration().getHeight();
+            transp = transp + scaleTransp;
+
         }
     }
 
@@ -195,6 +249,7 @@ public class Shop {
         }
         g.drawString(cp, xString, yString);
     }
+
 
     /* Renvoie une couleur aléatoire d'une certaine saturation */
     private Color getRandomSaturatedColor(float s, float l) {
