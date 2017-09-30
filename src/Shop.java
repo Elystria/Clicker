@@ -159,8 +159,8 @@ public class Shop {
         int x = (int) this.shopFond.getX();
         int y = (int) this.shopFond.getY();
         boolean pair = true;
-        int transpDebut = 0;
-        int transpFin = 255;
+        int transpDebut = 100;
+        int transpFin = 225;
         int nbProduit = produitsBots.size();
         int scaleTransp = abs(transpFin - transpDebut)/(nbProduit-1);
 
