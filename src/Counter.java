@@ -4,11 +4,13 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import java.lang.System;
 
 import java.awt.*;
 //import java.awt.Font;
@@ -18,6 +20,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.*;
+
+import static java.lang.System.currentTimeMillis;
 
 
 public class Counter {
@@ -61,6 +65,11 @@ public class Counter {
     private int yEnd;
     private int coefRotation;//indique la vitesse de rotation
     private int zoneGrad;
+
+    //Pour le counter, animation clic
+    private boolean clic;
+    private static long t1;
+    private static long t2;
 
     /* Constructeurs */
 
@@ -138,6 +147,8 @@ public class Counter {
 
     /* Affiche le counter à l'écran */
     public void render(Graphics g, WindowGame windows, GameContainer gc, float scale) throws SlickException {
+
+
         // on récupère la position d'affichage
         this.getPositionAffichage(windows, scale);
 
@@ -149,11 +160,25 @@ public class Counter {
 
         // on affiche le nombre de pixels juste au dessus
         this.renderText(g, windows);
+
+        //on affiche une forme s'il y a eu un clic
+        if (clic){
+            this.animationClic(0,0);
+        }
    }
 
     private void getPositionAffichage(WindowGame windows, float scale) {
         this.xPos = windows.getWindowsWidth() / 2 - ((int) ((animation.getWidth() * scale) / 2));
         this.yPos = windows.getWindowsHeight() / 2 - ((int) ((animation.getHeight() * scale) / 2));
+    }
+
+
+    //Affiche un produit du shop pendant une courte durée
+    public void animationClic(int x, int y) throws SlickException {
+        //Choisir la forme à afficher
+        Image imageClic = new Image("resources/shop/prod_shop_1.png");
+        imageClic.draw(x, y);
+
     }
 
     private void renderBackground(Graphics g, WindowGame windows, float scale) {
@@ -365,7 +390,7 @@ public class Counter {
 
     /* Réagit lors du clic d'un utilisateur
      * x et y : int coordonnées du clic  */
-    public void mouseClicked(int x, int y){
+    public void mouseClicked(int x, int y) throws SlickException {
         //Vérifier la localisation du clic
         if (x>=xPos && x<=xPos + (getAnimation().getHeight() * tailleActuelle)
             && y>=yPos && y<=yPos + getAnimation().getWidth() * tailleActuelle){
@@ -381,6 +406,9 @@ public class Counter {
 
             // ajouter des pixels
             this.activer();
+
+            //afficher un produit aléatoire du shop
+            clic = true;
         }
     }
 

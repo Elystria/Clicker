@@ -36,7 +36,11 @@ public class WindowGame extends BasicGame {
    @Override
    public void mouseClicked(int button, int x, int y, int clickCount){
         //Clic sur le counter
-       this.partie.getCounter().mouseClicked(x, y);
+       try {
+           this.partie.getCounter().mouseClicked(x, y);
+       } catch (SlickException e) {
+           e.printStackTrace();
+       }
        this.partie.getShop().mouseClicked(x, y);
    }
 

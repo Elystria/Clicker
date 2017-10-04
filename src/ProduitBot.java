@@ -27,7 +27,9 @@ public class ProduitBot extends Produit {
     //public void afficher(){}
 
     @Override
-    public void acheter(){}
+    public void acheter(){
+
+    }
 
     public EnsembleBot getBot() {
         return bot;
