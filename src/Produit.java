@@ -1,43 +1,52 @@
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
+import java.awt.*;
 
 public abstract class Produit {
-    private int prixActuel;
+
+    /* Attributs */
+
+    // Model
+    private int prixDeBase;
     private Disponibilite disponibilite;
+
+    // Vue
     private Image illustration;
 
     /* Constructeurs */
-    public Produit(int prixActuel, Image image){
-        this.prixActuel = prixActuel;
+    public Produit(int prixDeBase, String image) throws SlickException {
+        this.prixDeBase = prixDeBase;
         this.disponibilite = new DisponibiliteFalse();
-        this.illustration = image;
+        this.illustration = new Image(image);
     }
 
     //Un produit par défaut
     public Produit(){
-        this.prixActuel = 0;
+        this.prixDeBase = 0;
         this.disponibilite = new DisponibiliteFalse();
+        this.illustration = null;
     }
 
     /* Méthodes */
 
-    public void acheter(){
-    }
+    public abstract void acheter();
 
     public boolean estDisponible(){
-        //par défaut, n'est pas disponible en magasin
-        return false;
+        return disponibilite.estDisponible();
     }
 
-    public void afficher(){
+    public void afficher(Rectangle rect){
+        // afficher l'illustration au bon endroit
+        // TODO
         this.illustration.draw();
-
     }
 
     /*Getters et Setters*/
 
-    public void setPrixActuel(int prixActuel) {
-        this.prixActuel = prixActuel;
+    public void setPrixActuel(int prixDeBase) {
+        this.prixDeBase = prixDeBase;
     }
 
     public void setDisponibilite(Disponibilite disponibilite) {
@@ -46,7 +55,7 @@ public abstract class Produit {
 
     public int getPrixActuel() {
 
-        return prixActuel;
+        return prixDeBase;
     }
 
     public Disponibilite getDisponibilite() {
