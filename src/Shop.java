@@ -14,6 +14,9 @@ import static java.lang.Math.abs;
 import static java.lang.Math.min;
 import static java.lang.Math.nextAfter;
 
+
+//Ligne inutile !
+
 public class Shop {
 
     /* Attributs */
