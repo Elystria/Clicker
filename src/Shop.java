@@ -1,5 +1,8 @@
 import org.lwjgl.Sys;
 import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
@@ -150,14 +153,16 @@ public class Shop {
 
         // affichage du mot shop
         String s = "SHOP";
+        /*
         UnicodeFont font = new UnicodeFont("resources/fonts/pixelmix/pixelmix.ttf", 20, false, false);
 
         font.addAsciiGlyphs();
         font.addGlyphs(400, 600);
         font.getEffects().add(new ColorEffect());
         font.loadGlyphs();
+        */
 
-        //Font font = g.getFont();
+        Font font = g.getFont();
         float xString = enteteFond.getX() + enteteFond.getWidth() / 2 - font.getWidth(s) / 2;
         float yString = enteteFond.getY() + enteteFond.getHeight() * 0.3f - font.getHeight(s) / 2;
         g.setColor(new Color(255, 255, 255));
