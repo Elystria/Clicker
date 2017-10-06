@@ -1,0 +1,29 @@
+
+/*** Description des Ensembles de Bots ***/
+
+    Dans le Clicker, nous avons un certains nombre de bots que nous pouvous acheter. Seulement, pour ne pas
+que ceux-ci soient tous identiques à une image près, nous devons nous également nous attacher au design de leur
+caractéristiques.
+
+    La première et surement la plus importante de ces caractéristiques sera leur catégorie. En effet, pour que le
+jeu possède différentes phases de jeu et donc plus d'attrait ludique, il me semble pertinent de traiter certaines
+catégories de bots de manières différentes des autres !
+    Je distingue ainsi 3 catégories :
+- 2D il s'agit des formes géométriques régulières de 1 à 10 cotés
+(pixel, ligne, triangle, carré, pentagone, hexagone, heptagone, octogone, ennéagone, décagone)
+- 3D il s'agit des solides de Platons (l'équivalent régulier formes 2D en 3D), seulement il n'y en a que 5 et correspondent
+aux valeurs 3, 4, 8, 12, 20 ... Il va donc nous falloir compléter et nous adapter !
+Nous allons utiliser les solides d'Archimède ! J'ai pensé à 5 d'entre eux, mais il reste encore à les mettre dans l'ordre !
+L'octaèdre tronqué, l'icosaèdre tronqué, le triacontaèdre rhombique (n'est pas un solide d'Archimède !), l'icosidodécaèdre tronqué
+et le grand dodécaèdre étoilé (lui est un solide de Kepler XD) !
+- 4D il s'agit de l'adaptation des formes 3D de bases à celles en 4 dimension ! Il n'existe malheureusement pas
+beaucoup de solides 4D connus, nous nous contenterons ainsi des 6 répertoriés au lieu des 10 habituels ! On a
+le pentachore, le tesseract, l'hexadécochore, l'icositétrachore, l'hécatonicosachore, l'hexacosichore !
+
+    Ainsi chaque catégorie aura un rôle particulier à jouer dans le Game Design du jeu ! TODO
+
+    Mais quelles sont ces caractéristiques ? TODO
+Et bien la plupart parlent du prix d'un Bot, et de son rendement. Ce sont en effet les facteurs majeurs qui rentreront
+en compte dans le jeu. Voici la liste la plus importante.
+
+    2D ==> caractéristiques TODO

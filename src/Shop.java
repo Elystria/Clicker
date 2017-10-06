@@ -127,9 +127,10 @@ public class Shop {
         List<ProduitBot> p = new ArrayList<ProduitBot>();
 
         // Créer tous les produits que l'on pourra acheter
-        p.add(new ProduitBot(new EnsembleBot("item1", 10), 10, new Image("resources/shop/point_shop.png")));
-        p.add(new ProduitBot(new EnsembleBot("item2", 10), 10, new Image("resources/shop/droite_shop.png")));
-        p.add(new ProduitBot(new EnsembleBot("item3", 10), 10, new Image("resources/shop/triangle_shop.png")));
+        p.add(new ProduitBot(new EnsembleBot("Pixel", 10), 10, "resources/shop/point_shop.png"));
+        p.add(new ProduitBot(new EnsembleBot("Ligne", 10), 10, "resources/shop/droite_shop.png"));
+        p.add(new ProduitBot(new EnsembleBot("Triangle", 10), 10, "resources/shop/triangle_shop.png"));
+        p.add(new ProduitBot(new EnsembleBot("Carre", 10), 10, "resources/shop/carre_shop.png"));
 
 
         return p;
@@ -168,8 +169,8 @@ public class Shop {
         int x = (int) this.shopFond.getX();
         int y = (int) this.shopFond.getY();
         boolean pair = true;
-        int transpDebut = 0;
-        int transpFin = 255;
+        int transpDebut = 100;
+        int transpFin = 200;
         int nbProduit = produitsBots.size();
         int scaleTransp = abs(transpFin - transpDebut)/(nbProduit-1);
 
