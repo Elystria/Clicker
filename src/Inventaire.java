@@ -10,6 +10,22 @@ public class Inventaire {
         this.upgradesdebloquees = new ArrayList<ProduitUpgrade>();
     }
 
+    public ArrayList<ProduitBot> getProduitsPossedes() {
+        return produitsPossedes;
+    }
+
+    public void setProduitsPossedes(ArrayList<ProduitBot> produitsPossedes) {
+        this.produitsPossedes = produitsPossedes;
+    }
+
+    public ArrayList<ProduitUpgrade> getUpgradesdebloquees() {
+        return upgradesdebloquees;
+    }
+
+    public void setUpgradesdebloquees(ArrayList<ProduitUpgrade> upgradesdebloquees) {
+        this.upgradesdebloquees = upgradesdebloquees;
+    }
+
     public void afficher(){
 
     }

@@ -31,7 +31,7 @@ public abstract class Produit {
 
     /* Méthodes */
 
-    public abstract void acheter();
+    public abstract void acheter() throws SlickException;
 
     public boolean estDisponible(){
         return disponibilite.estDisponible();

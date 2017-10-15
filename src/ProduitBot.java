@@ -25,7 +25,7 @@ public class ProduitBot extends Produit {
     //public void afficher(){}
 
     @Override
-    public void acheter(){
+    public void acheter() {
         //Peut-on acheter le produit ?
         Counter counter = partie.getCounter();
 
@@ -34,6 +34,13 @@ public class ProduitBot extends Produit {
             System.out.println("acheté");
             //Mettre le nombre de pixels possédés à jour
             counter.setNbPixels(counter.getNbPixels() - this.getPrixActuel());
+            //Mettre à jour l'inventaire
+            try {
+                partie.getInventaire().getProduitsPossedes().add(new ProduitBot(this.bot, this.getPrixActuel(), this.getIllustration().getResourceReference(), partie));
+            } catch (Exception e){
+                e.printStackTrace();
+
+            }
 
         }
     }

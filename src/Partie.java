@@ -39,9 +39,9 @@ public class Partie {
         return shop;
     }
 
-//    public Inventaire getInventaire() {
-//        return inventaire;
-//    }
+    public Inventaire getInventaire() {
+        return inventaire;
+    }
 //
 //    public Events getEvents() {
 //        return events;
