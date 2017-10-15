@@ -298,13 +298,15 @@ public class Counter {
         } */
 
         String s = "Pixels : " + nbPixels;
-        //Font pixelFont = g.getFont();
-        UnicodeFont pixelFont = new UnicodeFont("resources/fonts/pixelhole/pixelhole.ttf", 55, false, false);
+        Font pixelFont = g.getFont();
+        /*
+        UnicodeFont pixelFont = new UnicodeFont("resources/fonts/pixelhole/pixelhole.ttf", 20, false, false);
 
         pixelFont.addAsciiGlyphs();
         pixelFont.addGlyphs(400, 600);
         pixelFont.getEffects().add(new ColorEffect());
         pixelFont.loadGlyphs();
+        */
 
         int xString = windows.getWindowsWidth() / 2 - pixelFont.getWidth(s) / 2;
         int yString = windows.getWindowsHeight() / 2 - pixelFont.getHeight(s) * 2 - (int) (animation.getHeight() * size + size / 20) / 2;
