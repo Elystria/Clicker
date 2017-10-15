@@ -27,6 +27,7 @@ public class Shop {
     // Model
     private List<ProduitBot> produitsBots; // Liste des produits de Bots que contient la boutique;
     private List<ProduitUpgrade> produitsUpgrades; // Liste des produits d'Upgrades que contient la boutique;
+    private Partie partie;
 
     // Affichage
     // Background
@@ -48,7 +49,9 @@ public class Shop {
     private Rectangle shopFond; //le fond de la partie principale du shop
 
     /* Initialisation du shop */
-    public Shop(WindowGame windows) throws SlickException {
+    public Shop(WindowGame windows, Partie partie) throws SlickException {
+        this.partie = partie;
+
         // Calcul de la position
         this.pos = initPos(windows);
 
@@ -130,10 +133,10 @@ public class Shop {
         List<ProduitBot> p = new ArrayList<ProduitBot>();
 
         // Créer tous les produits que l'on pourra acheter
-        p.add(new ProduitBot(new EnsembleBot("Pixel", 10), 10, "resources/shop/point_shop.png"));
-        p.add(new ProduitBot(new EnsembleBot("Ligne", 10), 10, "resources/shop/droite_shop.png"));
-        p.add(new ProduitBot(new EnsembleBot("Triangle", 10), 10, "resources/shop/triangle_shop.png"));
-        p.add(new ProduitBot(new EnsembleBot("Carre", 10), 10, "resources/shop/carre_shop.png"));
+        p.add(new ProduitBot(new EnsembleBot("Pixel", 10), 10, "resources/shop/point_shop.png", partie));
+        p.add(new ProduitBot(new EnsembleBot("Ligne", 10), 10, "resources/shop/droite_shop.png", partie));
+        p.add(new ProduitBot(new EnsembleBot("Triangle", 10), 10, "resources/shop/triangle_shop.png", partie));
+        p.add(new ProduitBot(new EnsembleBot("Carre", 10), 10, "resources/shop/carre_shop.png", partie));
 
 
         return p;
@@ -414,6 +417,20 @@ public class Shop {
             while(currentPhrase == old) {
                 currentPhrase = rdn.nextInt(catchPhrases.size());
             }
+        }
+        //Si on est dans la partie principale du Shop
+        if ( x > enteteFond.getX() && x < enteteFond.getX() + enteteFond.getWidth()
+            && y > enteteFond.getY() + enteteFond.getHeight() ) {
+            //Detection du produit sur lequel on a cliqué
+            int nbProduits = this.produitsBots.size();
+            int hauteur = produitsBots.get(0).getIllustration().getHeight();
+            int indiceProduitClique = (int) (y - enteteFond.getHeight())/hauteur;
+            // Acheter si le produit existe
+            if (indiceProduitClique < nbProduits){
+
+                produitsBots.get(indiceProduitClique).acheter();
+            }
+
         }
     }
 }

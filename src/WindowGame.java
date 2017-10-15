@@ -41,20 +41,20 @@ public class WindowGame extends BasicGame {
        } catch (SlickException e) {
            e.printStackTrace();
        }
-       this.partie.getShop().mouseClicked(x, y);
+       this.partie.getShop(partie).mouseClicked(x, y);
    }
 
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException {
         // affichage du counter
         partie.getCounter().render(g, this, gc, partie.getCounter().getTailleActuelle());
-        partie.getShop().render(g);
+        partie.getShop(partie).render(g);
     }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
        partie.getCounter().update(delta);
-       partie.getShop().update(delta);
+       partie.getShop(partie).update(delta);
     }
 
     /* Getteurs et Setteurs */

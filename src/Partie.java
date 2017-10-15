@@ -1,4 +1,3 @@
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -21,7 +20,7 @@ public class Partie {
     public Partie() throws SlickException {
         this.windows = windows;
         this.counter = new Counter();
-        this.shop = new Shop(windows);
+        this.shop = new Shop(windows, this);
         this.inventaire = new Inventaire();
 //        this.shop = new Shop();
 //        this.inventaire = new Inventaire();
@@ -36,7 +35,7 @@ public class Partie {
         return counter;
     }
 
-    public Shop getShop() {
+    public Shop getShop(Partie this, Partie partie) {
         return shop;
     }
 
