@@ -116,6 +116,7 @@ public class Shop {
         this.catchPhrases.add("En vrai, tu paries combien qu'il y a un succes pour avoir acheté 1 000 Points ?");
         this.catchPhrases.add("Je parie que tu vas acheter un truc.");
         this.catchPhrases.add("Pile je gagne, Face tu perds. OK ?");
+        this.catchPhrases.add("Rien n'est plus fort que l'amour. A part plein de pixels");
 
         this.currentPhrase = 0;
     }
@@ -200,6 +201,15 @@ public class Shop {
             g.fill(fondProduit);
             //Afficher l'image
             produit.getIllustration().draw(x,y);
+
+            //Afficher le prix
+            String sPrix = String.valueOf(produit.getPrixActuel());
+            int xString = x + produit.getIllustration().getWidth() + 20;
+            int yString = y + produit.getIllustration().getHeight()/2;
+
+            g.setColor(Color.darkGray);
+            g.drawString(sPrix, xString, yString);
+
             //Calculer la prochaine position de l'image
             y = y + produit.getIllustration().getHeight();
             transp = transp + scaleTransp;

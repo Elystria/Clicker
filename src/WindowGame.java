@@ -13,7 +13,7 @@ public class WindowGame extends BasicGame {
     /* Constructeurs */
 
     public WindowGame() {
-        super("Lesson 1 :: WindowGame");
+        super("Pixel Clicker");
     }
 
     /* Méthodes */
