@@ -28,12 +28,13 @@ public class ProduitBot extends Produit {
     public void acheter() {
         //Peut-on acheter le produit ?
         Counter counter = partie.getCounter();
+        CounterText counterText = counter.getCounterText();
 
-        if(this.getPrixActuel() <= counter.getNbPixels()){
+        if(this.getPrixActuel() <= counterText.getNbPixels()){
             this.bot.setNbPossedes(this.bot.getNbPossedes() + 1);
             System.out.println("acheté");
             //Mettre le nombre de pixels possédés à jour
-            counter.setNbPixels(counter.getNbPixels() - this.getPrixActuel());
+            counterText.setNbPixels(counterText.getNbPixels() - this.getPrixActuel());
             //Mettre à jour l'inventaire
             try {
                 partie.getInventaire().getProduitsPossedes().add(new ProduitBot(this.bot, this.getPrixActuel(), this.getIllustration().getResourceReference(), partie));

@@ -30,10 +30,8 @@ public class Counter {
     /* Attributs */
 
     // model
-    private int nbPixels; //Nombre de pixels possédés
-    private int pps; //Nombre de pixels gagnés chaque seconde
-    private int lastPps, freqPps; // la dernière fois qu'on a gagné des pixels, la fréquenc à laquelle on les gagnes
-    private int ppc; //Nombre de pixels gagnés par clic
+    private CounterText counterText; //affichage du texte counter
+
 
     // vue
     private Animation animation; // l'animation du tesserac
@@ -79,12 +77,7 @@ public class Counter {
 
 
     public Counter(int nbPixelsDepart, int pps, int ppc, float size) throws SlickException {
-        // initialisation du model
-        this.nbPixels = nbPixelsDepart;
-        this.pps = pps ;
-        this.lastPps = 0;
-        this.freqPps = 1000;
-        this.ppc = ppc ;
+
 
         // initialisation de l'affichage
        SpriteSheet spriteSheet = new SpriteSheet("resources/sprites/tesseract_spritesheet_trans.png", 160, 160);
@@ -92,7 +85,9 @@ public class Counter {
         for(int i = 0; i < NB_SPRITE_ANIMATION; i++){
             this.animation.addFrame(spriteSheet.getSprite(i, 0), TIME_SPRITE_DURATION);
         }
+
         this.size = size;
+        this.counterText = new CounterText(nbPixelsDepart, pps, ppc, animation.getHeight(), size);
         this.taille = size;
         this.tailleVariation = size / 200f;
         this.tailleMax = size + size / 20f;
@@ -135,15 +130,7 @@ public class Counter {
 
     /* Méthodes */
 
-    /* Met à jour le nombre total de pixels gagnés grace au clic */
-    public void activer(){
-        setNbPixels(this.getNbPixels() + this.getPpc());
-    }
 
-    /* Met à jour le nombre total de pixels gagnés grace au pps */
-    public void incrementer(){
-        setNbPixels(this.getNbPixels() + this.getPps());
-    }
 
     /* Affiche le counter à l'écran */
     public void render(Graphics g, WindowGame windows, GameContainer gc, float scale) throws SlickException {
@@ -159,7 +146,7 @@ public class Counter {
         this.renderAnimation(scale);
 
         // on affiche le nombre de pixels juste au dessus
-        this.renderText(g, windows);
+        this.counterText.renderText(g, windows);
 
         //on affiche une forme s'il y a eu un clic
         if (clic){
@@ -266,60 +253,6 @@ public class Counter {
         this.animation.draw(xPos, yPos, animation.getWidth() * scale, animation.getHeight()*scale);
     }
 
-    private void renderText(Graphics g, WindowGame windows) throws SlickException {
-        /*
-        String s = "Pixels : " + nbPixels;
-        Font font = g.getFont();
-        int xString = windows.getWindowsWidth() / 2 - font.getWidth(s) / 2;
-        int yString = windows.getWindowsHeight() / 2 - font.getHeight(s) * 2 - (int) (animation.getHeight() * size + size / 20) / 2;
-        g.setColor(new Color(255, 255, 255));
-        g.setFont(font);
-        g.drawString(s, xString, yString);
-        */
-        /* TESTS SUR LES FONDS */
-        /* GraphicsEnvironment ge =
-                GraphicsEnvironment.getLocalGraphicsEnvironment();
-        try {
-
-            ge.registerFont(java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("resources/fonts/pixelhole/pixelhole.ttf")));
-        } catch (FontFormatException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String[] fonts = ge.getAvailableFontFamilyNames();
-        for (String font : fonts) {
-            System.out.println(font);
-            if (font.equals("Pixelhole")){
-                String fontNbPixels = font;
-            }
-
-        } */
-
-        String s = "Pixels : " + nbPixels;
-        Font pixelFont = g.getFont();
-        /*
-        UnicodeFont pixelFont = new UnicodeFont("resources/fonts/pixelhole/pixelhole.ttf", 20, false, false);
-
-        pixelFont.addAsciiGlyphs();
-        pixelFont.addGlyphs(400, 600);
-        pixelFont.getEffects().add(new ColorEffect());
-        pixelFont.loadGlyphs();
-        */
-
-        int xString = windows.getWindowsWidth() / 2 - pixelFont.getWidth(s) / 2;
-        int yString = windows.getWindowsHeight() / 2 - pixelFont.getHeight(s) * 2 - (int) (animation.getHeight() * size + size / 20) / 2;
-        //g.setColor(new Color(175, 175, 175));
-        g.setFont(pixelFont);
-        g.drawString(s, xString, yString);
-
-       /* FIN DES TESTS */
-    }
-
-
-
-
     /* S'occupe de mettre à jour le counter */
     public void update(int delta) {
         // mise à jour de la taille initiale du counter
@@ -329,7 +262,8 @@ public class Counter {
         this.updateBouncers(delta);
 
         // On incrémente le counter toutes les secondes
-        this.updatePixels(delta);
+        this.counterText.updatePixels(delta);
+
     }
 
     private void updateTaille(int delta) {
@@ -375,13 +309,6 @@ public class Counter {
         }
     }
 
-    private void updatePixels(int delta) {
-        lastPps += delta;
-        if(lastPps > freqPps) {
-            nbPixels += pps;
-            lastPps = 0;
-        }
-    }
 
 
     /* Change la couleur du tesseract */
@@ -407,7 +334,7 @@ public class Counter {
             this.bouncers.add(bouncerStart);
 
             // ajouter des pixels
-            this.activer();
+            this.counterText.activer();
 
             //afficher un produit aléatoire du shop
             clic = true;
@@ -427,29 +354,6 @@ public class Counter {
 
     /* Getteurs et Setteurs */
 
-    public int getNbPixels() {
-        return nbPixels;
-    }
-
-    public void setNbPixels(int nbPixels) {
-        this.nbPixels = nbPixels;
-    }
-
-    public int getPps() {
-        return pps;
-    }
-
-    public void setPps(int pps) {
-        this.pps = pps;
-    }
-
-    public int getPpc() {
-        return ppc;
-    }
-
-    public void setPpc(int ppc) {
-        this.ppc = ppc;
-    }
 
     public Animation getAnimation() {
         return animation;
@@ -506,5 +410,9 @@ public class Counter {
     }
     public int getYEnd() {
         return (int) this.getFondFill().getEnd().getY();
+    }
+
+    public CounterText getCounterText() {
+        return counterText;
     }
 }
