@@ -47,7 +47,7 @@ public class WindowGame extends BasicGame {
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException {
         // affichage du counter
-        partie.getCounter().render(g, this, gc, partie.getCounter().getTailleActuelle());
+        partie.getCounter().render(g, this, gc, partie.getCounter().getVue().getTailleActuelle());
         partie.getShop(partie).render(g);
     }
 
