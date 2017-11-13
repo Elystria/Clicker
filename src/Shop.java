@@ -424,9 +424,9 @@ public class Shop {
             int nbProduits = this.produitsBots.size();
             int hauteur = produitsBots.get(0).getIllustration().getHeight();
             int indiceProduitClique = (int) (y - enteteFond.getHeight())/hauteur;
+            
             // Acheter si le produit existe
             if (indiceProduitClique < nbProduits){
-
                 produitsBots.get(indiceProduitClique).acheter();
             }
 

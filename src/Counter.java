@@ -178,7 +178,9 @@ public class Counter {
         //Choisir la forme à afficher
         Image imageClic = new Image("resources/shop/prod_shop_1.png");
         imageClic.draw(x, y);
-
+        
+        // Continue Marie t'es sur le bon chemin ! <3
+        // TODO
     }
 
     private void renderBackground(Graphics g, WindowGame windows, float scale) {
