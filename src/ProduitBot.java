@@ -8,13 +8,15 @@ public class ProduitBot extends Produit {
     // Model
     private EnsembleBot bot;// EnsembleBot correspondant au produit
     private int prixDeBase; //Prix original du bot
-
+    private Partie partie; //partie dans laquelle on achète le produit
     /* Constructeurs */
 
-    public ProduitBot(EnsembleBot bot, int prix, String image) throws SlickException {
+    public ProduitBot(EnsembleBot bot, int prix, String image, Partie partie) throws SlickException {
         super(prix, image);
         this.bot = bot;
         this.prixDeBase = prix;
+        this.partie = partie;
+
     }
 
     /* Méthodes */
@@ -23,7 +25,25 @@ public class ProduitBot extends Produit {
     //public void afficher(){}
 
     @Override
-    public void acheter(){}
+    public void acheter() {
+        //Peut-on acheter le produit ?
+        Counter counter = partie.getCounter();
+
+        if(this.getPrixActuel() <= counter.getNbPixels()){
+            this.bot.setNbPossedes(this.bot.getNbPossedes() + 1);
+            System.out.println("acheté");
+            //Mettre le nombre de pixels possédés à jour
+            counter.setNbPixels(counter.getNbPixels() - this.getPrixActuel());
+            //Mettre à jour l'inventaire
+            try {
+                partie.getInventaire().getProduitsPossedes().add(new ProduitBot(this.bot, this.getPrixActuel(), this.getIllustration().getResourceReference(), partie));
+            } catch (Exception e){
+                e.printStackTrace();
+
+            }
+
+        }
+    }
 
 
     /* Getteurs et Setteurs */
@@ -33,9 +53,10 @@ public class ProduitBot extends Produit {
     }
 
     public int getPrixActuel(){
-        //TODO
-        return 0;
+
+        return this.prixDeBase;
     }
+
 
     public EnsembleBot getBot() {
         return bot;

@@ -1,0 +1,74 @@
+
+/*** Description des Ensembles de Bots ***/
+
+    Dans le Clicker, nous avons un certains nombre de bots que nous pouvous acheter. Seulement, pour ne pas
+que ceux-ci soient tous identiques à une image près, nous devons nous également nous attacher au design de leur
+caractéristiques.
+
+    Mais quelles sont ces caractéristiques ?
+Et bien la plupart parlent du prix d'un Bot, et de son rendement. Ce sont en effet les facteurs majeurs qui rentreront
+en compte dans le jeu. Voici la liste des caractéristiques de base :
+- p : le prix initial du premier bot
+- r : le rapport d'efficacité d'un bot
+- m : le coefficiant de multiplicité, un bot coûte plus cher si on en a déjà du même type !
+    Ainsi on aura quelques formules essentiels sur lesquelles nous devront nous baser pour définir les caractéristiques
+des bots. On s'y tiendra méthodiquement pour les bots 2D, puis on se permettra des disgretions pour le 3D et le 4D.
+- prix final = p * m^n    où n est le nombre de bots de ce type que l'on possède
+- efficacité par bot = p * r
+    On aura aussi des formules pour déterminer (p, r, m) pour un bot suivant. Si on est au bot i alors :
+- p(i+1) = 10 * (1 + 1/2*sin(2*pie*i/5)) * p(i)
+- r(i+1) = 1.6 * (1 + 1/4*cos(2*pie*i/5)) * r(i)
+- m(i+1) = (1.02)^i * m(i)
+
+    Mais la caractéristique la plus importante sera sans aucun doute leur catégorie. En effet, pour que le
+jeu possède différentes phases de jeu et donc plus d'attrait ludique, il me semble pertinent de traiter certaines
+catégories de bots de manières différentes des autres !
+    Je distingue ainsi 3 catégories :
+- 2D il s'agit des formes géométriques régulières de 1 à 10 cotés
+(pixel, ligne, triangle, carré, pentagone, hexagone, heptagone, octogone, ennéagone, décagone)
+- 3D il s'agit des solides de Platons (l'équivalent régulier formes 2D en 3D), seulement il n'y en a que 5 et correspondent
+aux valeurs 3, 4, 8, 12, 20 ... Il va donc nous falloir compléter et nous adapter !
+Nous allons utiliser les solides d'Archimède ! J'ai pensé à 5 d'entre eux, mais il reste encore à les mettre dans l'ordre !
+L'octaèdre tronqué, l'icosaèdre tronqué, le triacontaèdre rhombique (n'est pas un solide d'Archimède !), l'icosidodécaèdre tronqué
+et le grand dodécaèdre étoilé (lui est un solide de Kepler XD) !
+- 4D il s'agit de l'adaptation des formes 3D de bases à celles en 4 dimension ! Il n'existe malheureusement pas
+beaucoup de solides 4D connus, nous nous contenterons ainsi des 6 répertoriés au lieu des 10 habituels ! On a
+le pentachore, le tesseract, l'hexadécochore, l'icositétrachore, l'hécatonicosachore, l'hexacosichore !
+
+    Ainsi chaque catégorie aura un rôle particulier à jouer dans le Game Design du jeu !
+- 2D : cette partie est là pour initier le joueur au principe du Clicker et de l'effet Skinner.
+Elle doit permettre de focaliser l'attention du joueur sur sa volonté de toujours plus acheter/dépenser. Elle doit
+faire cela de manière simple et sobre : c'est l'introduction et le tutoriel du jeu.
+    - Les bots doivent être tous simples et similaires, quoique certains plus rentables
+    - la courbe de progression doit être attractive
+    - la durée de cette partie devrait durer environ 24 heures (en innaction), ou 4/5 heures d'activité pour ne pas que le
+      joueur s'ennuie
+- 3D : cette parti a pour but d'approfondir la partie précédente. Le joueur découvre que le décagone n'est pas la fin !
+Il faut donc que ce qui vienne après lui montre un intêret nouveau et surtout différent mécaniquement. Les bots de
+cette catégorie doivent tous être un petit peu particulier !
+    - certains pourraient synergiser avec leur homologue de la partie 2D
+    - les autres devraient être intrinsèquement puissants :
+        - ils pourraient avoir un mauvais rendement, mais permettre de débloquer des améliorations puissantes
+        - ils pourraient avoir un rapport d'efficacité puissant, mais un mauvais coefficiant de multiplicité
+        - ils pourraient avoir coefficiant de multiplicité inférieur à 1 ! (attention c'est dangeureux !)
+        - etc ... (il manque 2 idées ici !)
+    - cette partie doit motiver le joueur à trouver des stratégies intéressantes, elle doit être suffisemment longue
+      pour lui permettre d'en profiter ! Elle devrait durer 1 semaine de semi-innaction. 48 heures d'activités sinon.
+- 4D : cette fois-ci, on atteint les bots les plus importants du jeu ! Chacun d'eux est unique et a des influences
+très importantes sur la façon dont ce joue le jeu ! Cette partie peut être très longue, genre vraiment ! XD
+Cette fois-ci, ce ne seront pas les caractéristiques des bots qui devront être importantes, quoi qu'elles seront tout de
+même très puissantes, mais ce seront la nouvelle mécaniques qu'ils apporteront au jeu à chaque fois !
+    - pentachore : c'est le premier polytope (volume 4D) ! Il se doit de se distinguer de tous les autres.
+      Il doit ajouter une dimension au jeu ;) ==> Ajout des 10 clicks si c'est pas déjà fait !
+    - tesseract : c'est LUI ! c'est sur lui qu'on appui depuis le début du jeu ! L'acheter doit être un moment particulier,
+      c'est grâce à lui qu'on a pu tout faire depuis le début. Imaginons qu'on en achète un deuxième, alors il y aura
+      plusieurs tesseract sur lesquelles appuyer ! Et à chaque fois qu'on click sur un autre tesseract, on gagne un bonus ! <3
+      Il peut y avoir jusqu'à 9 tesseract !
+    - hexadécachore : alors il faut trouver encore 4 mécaniques. À chaque fois qu'on fait une action, celui-ci la copie
+      une fois de plus mais gratuitement. Cela marche pour les clicks, et les achats 2D et 3D (mais pas 4D XD) !
+    - icositétrachore : Nous permet d'acheter gratuitement un bot de puissance inférieur toutes les X secondes.
+    - hécatonicosachore : Nous permet d'acheter les évènements pour les faire arriver quand on veut !
+    - hexacosichore (c'est dommage que son nom soit plus court que le précédent ! x) faudra peut-être les inverser !) :
+      Fait passer notre PPS à 1. Affiche un message : "J'espère que vous avez passé un bon moment. Demandez-vous pourquoi
+      vous avez tant joué à ce jeu. Puis retournez voir vos amis !"
+
