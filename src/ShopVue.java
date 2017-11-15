@@ -115,7 +115,7 @@ public class ShopVue {
             int x = (int) pos.getX();
             int y = (int) ( pos.getY() + enteteFond.getHeight());
             int w = (int) pos.getWidth();
-            int h = (int) (pos.getHeight() - enteteFond.getWidth());
+            int h = (int) (pos.getHeight() - enteteFond.getHeight());
         return new Rectangle(x, y, w, h);
     }
 
@@ -199,36 +199,29 @@ public class ShopVue {
     private void renderProduits(Graphics g){
         int x = (int) this.shopFond.getX();
         int y = (int) this.shopFond.getY();
-        boolean pair = true;
+        int w = (int) this.shopFond.getWidth();
+        int h = (int) this.shopFond.getHeight();
         int transpDebut = 100;
         int transpFin = 200;
         int nbProduit = shop.getProduitsBots().size();
         int scaleTransp = abs(transpFin - transpDebut)/(nbProduit-1);
+        int hauteurProduit = h / 10; // on ne pourra jamais mettre plus de 10 produits dans le shop !
+        							 // sinon il faudra rajouter des "palettes" pour les différentes dimensions
+        float scale = 1f; // le zoom de l'image
 
         int transp = transpDebut;
+        // Affichage en degradé de niveaux de gris
         for (Produit produit : shop.getProduitsBots()) {
 
-            Rectangle fondProduit = new Rectangle(x, y,
-                    this.shopFond.getWidth(), produit.getIllustration().getHeight());
-            // AFFICHAGE 1 : Rayures fond shop
-            /* // Afficher le rectangle de fond
-            if (pair){
-                g.setColor(new Color(255, 255, 255, 150));
-                pair = false;
-            } else {
-                g.setColor(new Color (255, 255,255, 100));
-                pair = true;
-            }*/
-
-            //AFFICHAGE 2 : Degradé de niveaux de gris
+            Rectangle fondProduit = new Rectangle(x, y, w, hauteurProduit);
             g.setColor(new Color(255,255,255, transp));
             g.fill(fondProduit);
             //Afficher l'image
-            produit.getIllustration().draw(x,y);
+            scale = (float) hauteurProduit / produit.getIllustration().getHeight();
+            produit.getIllustration().draw(x,y, produit.getIllustration().getWidth() * scale, produit.getIllustration().getHeight() * scale);
             //Calculer la prochaine position de l'image
-            y = y + produit.getIllustration().getHeight();
+            y = y + hauteurProduit;
             transp = transp + scaleTransp;
-
         }
     }
 

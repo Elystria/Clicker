@@ -60,6 +60,12 @@ public class Shop {
         p.add(new ProduitBot(new EnsembleBot("Ligne", 10), 10, "resources/shop/droite_shop.png", partie));
         p.add(new ProduitBot(new EnsembleBot("Triangle", 10), 10, "resources/shop/triangle_shop.png", partie));
         p.add(new ProduitBot(new EnsembleBot("Carre", 10), 10, "resources/shop/carre_shop.png", partie));
+        p.add(new ProduitBot(new EnsembleBot("Pentagone", 10), 10, "resources/shop/carre_shop.png", partie));
+        p.add(new ProduitBot(new EnsembleBot("Hexagone", 10), 10, "resources/shop/carre_shop.png", partie));
+        p.add(new ProduitBot(new EnsembleBot("Heptagone", 10), 10, "resources/shop/carre_shop.png", partie));
+        p.add(new ProduitBot(new EnsembleBot("Octogone", 10), 10, "resources/shop/carre_shop.png", partie));
+        p.add(new ProduitBot(new EnsembleBot("Énnéagone", 10), 10, "resources/shop/carre_shop.png", partie));
+        p.add(new ProduitBot(new EnsembleBot("Décagone", 10), 10, "resources/shop/carre_shop.png", partie));
 
         return p;
     }
