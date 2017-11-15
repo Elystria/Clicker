@@ -43,13 +43,16 @@ public class CounterVue {
     private GradientFill fondFill; // Pour remplissage du rectangle
     private boolean sensContraste; //indique quelle couleur s'éclaircit et laquelle s'assombrit dans le tesseract
 
-    //Pour le gradient
+    // Pour le gradient
     private int xStart;
     private int yStart;
     private int xEnd;
     private int yEnd;
     private int coefRotation;//indique la vitesse de rotation
     private int zoneGrad;
+    
+    // Pour le texte
+    private Text textNbPixel; // affiche le nombre de pixels
 
 	/***************************************************
 	CONSTRUCTEUR
@@ -103,6 +106,9 @@ public class CounterVue {
                 xEnd,
                 yEnd,
                 Color.red);
+        
+        // Initialisation du texte
+        this.textNbPixel = new Text("NbPixels", "resources/fonts/LLPIXEL3.ttf", 20, Color.white);
     }
     
 	/***************************************************
@@ -215,54 +221,17 @@ public class CounterVue {
     }
     
     private void renderText(Graphics g, WindowGame windows) throws SlickException {
-        /*
-        String s = "Pixels : " + nbPixels;
-        Font font = g.getFont();
-        int xString = windows.getWindowsWidth() / 2 - font.getWidth(s) / 2;
-        int yString = windows.getWindowsHeight() / 2 - font.getHeight(s) * 2 - (int) (animation.getHeight() * size + size / 20) / 2;
-        g.setColor(new Color(255, 255, 255));
-        g.setFont(font);
-        g.drawString(s, xString, yString);
-        */
-        /* TESTS SUR LES FONDS */
-        /* GraphicsEnvironment ge =
-                GraphicsEnvironment.getLocalGraphicsEnvironment();
-        try {
-
-            ge.registerFont(java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("resources/fonts/pixelhole/pixelhole.ttf")));
-        } catch (FontFormatException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String[] fonts = ge.getAvailableFontFamilyNames();
-        for (String font : fonts) {
-            System.out.println(font);
-            if (font.equals("Pixelhole")){
-                String fontNbPixels = font;
-            }
-
-        } */
-
+    	// le texte à écrire
         String s = "Pixels : " + counter.getNbPixels();
-        Font pixelFont = g.getFont();
-        /*
-        UnicodeFont pixelFont = new UnicodeFont("resources/fonts/pixelhole/pixelhole.ttf", 20, false, false);
-
-        pixelFont.addAsciiGlyphs();
-        pixelFont.addGlyphs(400, 600);
-        pixelFont.getEffects().add(new ColorEffect());
-        pixelFont.loadGlyphs();
-        */
-
-        int xString = windows.getWindowsWidth() / 2 - pixelFont.getWidth(s) / 2;
-        int yString = windows.getWindowsHeight() / 2 - pixelFont.getHeight(s) * 2 - (int) (animation.getHeight() * size + size / 20) / 2;
-        //g.setColor(new Color(175, 175, 175));
-        g.setFont(pixelFont);
-        g.drawString(s, xString, yString);
-
-       /* FIN DES TESTS */
+        textNbPixel.setTexte(s);
+        
+        // là où l'afficher
+        int xString = windows.getWindowsWidth() / 2;
+        int yString = windows.getWindowsHeight() / 2 - (int) (animation.getHeight() * size) / 2 - textNbPixel.getHeightText();
+        textNbPixel.centerArround(xString, yString);
+        
+        // on affiche
+        textNbPixel.draw(g);
     }
 
     /* S'occupe de mettre à jour le counter */

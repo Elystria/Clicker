@@ -18,14 +18,12 @@ public class WindowGame extends BasicGame {
 
     /* Méthodes */
 
-    private Text t;
     @Override
     public void init(GameContainer gc) throws SlickException {
         this.container = gc;
 
         // on initialise la partie
         partie = new Partie();
-        t = new Text("Je suis le nouveau texte", "resources/fonts/pixelmix/pixelmix.ttf", 30, Color.white);
     }
 
     @Override
@@ -51,20 +49,6 @@ public class WindowGame extends BasicGame {
         // affichage du counter
         partie.getCounter().render(g, this, gc, partie.getCounter().getVue().getTailleActuelle());
         partie.getShop(partie).render(g);
-        if(t.getColor() == Color.orange)
-        	t.setColor(Color.pink);
-        else
-        	t.setColor(Color.orange);
-        t.setFontSize(t.getFontSize());
-        System.out.println("police :" + t.getFont());
-        if(t.getFont().compareTo("resources/fonts/pixelmix/pixelmix.ttf") == 0) {
-        	t.setFont("resources/fonts/LLPIXEL3.ttf");
-        } else {
-        	t.setFont("resources/fonts/pixelmix/pixelmix.ttf");
-        }
-        // center
-        t.centerArround(200,  200);
-        t.draw(g);
     }
 
     @Override

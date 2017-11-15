@@ -32,6 +32,8 @@ public class ShopVue {
     private Rectangle enteteFond; // le fond de l'entête
     private List<String> catchPhrases; // les phrases d'accroche du shop !
     private int currentPhrase; // la catchphrase courante
+    private Text textShop; // la phrase "shop"
+    private Text textCatchphrase; // les phrases d'accroche du shop
 
     //Partie principale
     private Rectangle shopFond; //le fond de la partie principale du shop
@@ -103,6 +105,9 @@ public class ShopVue {
         this.catchPhrases.add("Pile je gagne, Face tu perds. OK ?");
 
         this.currentPhrase = 0;
+        
+        this.textShop = new Text("SHOP", "resources/fonts/LLPIXEL3.ttf", 20, Color.white);
+        this.textCatchphrase = new Text("", "resources/fonts/LLPIXEL3.ttf", 20, Color.white);
     }
 
     private Rectangle initBGFond(){
@@ -145,26 +150,19 @@ public class ShopVue {
         g.fill(enteteFond);
 
         // affichage du mot shop
-        String s = "SHOP";
-        /*
-        UnicodeFont font = new UnicodeFont("resources/fonts/pixelmix/pixelmix.ttf", 20, false, false);
+        int x = (int) (enteteFond.getX() + enteteFond.getWidth() / 2);
+        int y = (int) (enteteFond.getY() + enteteFond.getHeight() / 4);
+        textShop.centerArround(x, y);
+        textShop.draw(g);
+        
 
-        font.addAsciiGlyphs();
-        font.addGlyphs(400, 600);
-        font.getEffects().add(new ColorEffect());
-        font.loadGlyphs();
-        */
-
-        Font font = g.getFont();
-        float xString = enteteFond.getX() + enteteFond.getWidth() / 2 - font.getWidth(s) / 2;
-        float yString = enteteFond.getY() + enteteFond.getHeight() * 0.3f - font.getHeight(s) / 2;
-        g.setColor(new Color(255, 255, 255));
-        g.setFont(font);
-        g.drawString(s, xString, yString);
+        Font font = textCatchphrase.getFontSlick();
+        float xString = x, yString = y;
 
         // affichage d'une punch line
         String cp = catchPhrases.get(currentPhrase);
         boolean onADecoupe = false;
+        
         while(font.getWidth(cp) > enteteFond.getWidth()) {
             onADecoupe = true;
             int i = 0;
@@ -179,19 +177,23 @@ public class ShopVue {
             }
 
             // On affiche la première partie de la chaine
-            xString = enteteFond.getX() + enteteFond.getWidth() / 2 - font.getWidth(cpFirst) / 2;
+            xString = enteteFond.getX() + enteteFond.getWidth() / 2;
             yString = yString + font.getHeight(cpFirst) * 1.2f;
-            g.drawString(cpFirst, xString, yString);
+            textCatchphrase.setTexte(cpFirst);
+            textCatchphrase.centerArround((int)xString, (int)yString);
+            textCatchphrase.draw(g);
         }
 
         // On affiche la fin de la chaine
-        xString = enteteFond.getX() + enteteFond.getWidth() / 2 - font.getWidth(cp) / 2;
+        xString = enteteFond.getX() + enteteFond.getWidth() / 2;
         if(onADecoupe) {
             yString = yString + font.getHeight(cp) * 1.2f;
         } else {
-            yString = enteteFond.getY() + enteteFond.getHeight() * 0.65f - font.getHeight(cp) / 2;
+            yString = enteteFond.getY() + enteteFond.getHeight() * (5f/8f);
         }
-        g.drawString(cp, xString, yString);
+        textCatchphrase.setTexte(cp);
+        textCatchphrase.centerArround((int)xString, (int)yString);
+        textCatchphrase.draw(g);
     }
 
     private void renderProduits(Graphics g){

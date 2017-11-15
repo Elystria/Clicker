@@ -48,7 +48,6 @@ public class Text {
         	    this.fontJava = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File(font));
         	    // puis on lui "donne forme"
         	    this.fontJava = this.fontJava.deriveFont(java.awt.Font.PLAIN, fontSize);
-				System.out.println(fontJava.getFontName());
 			} catch (Exception e) {
 				System.out.println("Echec du chargement de la font !");
 				e.printStackTrace();
@@ -111,9 +110,7 @@ public class Text {
         	    this.fontJava = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File(fontName));
         	    // puis on lui "donne forme"
         	    this.fontJava = this.fontJava.deriveFont(java.awt.Font.PLAIN, fontSize);
-				System.out.println(fontJava.getFontName());
 			} catch (Exception e) {
-				System.out.println("Echec du chargement de la font !");
 				e.printStackTrace();
 			}        	
         }
@@ -174,5 +171,8 @@ public class Text {
 	}
 	public int getFontSize() {
 		return fontSize;
+	}
+	public org.newdawn.slick.Font getFontSlick() {
+		return fontSlick;
 	}
 }
