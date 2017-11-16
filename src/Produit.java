@@ -6,7 +6,9 @@ import java.awt.*;
 
 public abstract class Produit {
 
-    /* Attributs */
+	/***************************************************
+	ATTRIBUTS
+	***************************************************/
 
     // Model
     private int prixDeBase;
@@ -15,7 +17,10 @@ public abstract class Produit {
     // Vue
     private Image illustration;
 
-    /* Constructeurs */
+	/***************************************************
+	ATTRIBUTS
+	***************************************************/
+
     public Produit(int prixDeBase, String image) throws SlickException {
         this.prixDeBase = prixDeBase;
         this.disponibilite = new DisponibiliteFalse();
@@ -29,7 +34,9 @@ public abstract class Produit {
         this.illustration = null;
     }
 
-    /* Méthodes */
+	/***************************************************
+	ATTRIBUTS
+	***************************************************/
 
     public abstract void acheter() throws SlickException;
 
@@ -37,35 +44,25 @@ public abstract class Produit {
         return disponibilite.estDisponible();
     }
 
-    public void afficher(Rectangle rect){
-        // afficher l'illustration au bon endroit
-        // TODO
-        this.illustration.draw();
-    }
-
-    /*Getters et Setters*/
+	/***************************************************
+	ATTRIBUTS
+	***************************************************/
 
     public void setPrixActuel(int prixDeBase) {
         this.prixDeBase = prixDeBase;
     }
-
     public void setDisponibilite(Disponibilite disponibilite) {
         this.disponibilite = disponibilite;
     }
-
     public int getPrixActuel() {
-
         return prixDeBase;
     }
-
     public Disponibilite getDisponibilite() {
         return disponibilite;
     }
-
     public Image getIllustration() {
         return illustration;
     }
-
     public void setIllustration(Image illustration) {
         this.illustration = illustration;
     }

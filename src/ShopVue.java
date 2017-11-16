@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.print.attribute.standard.PDLOverrideSupported;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
@@ -211,17 +213,19 @@ public class ShopVue {
 
         int transp = transpDebut;
         // Affichage en degradé de niveaux de gris
-        for (Produit produit : shop.getProduitsBots()) {
-
-            Rectangle fondProduit = new Rectangle(x, y, w, hauteurProduit);
-            g.setColor(new Color(255,255,255, transp));
-            g.fill(fondProduit);
-            //Afficher l'image
-            scale = (float) hauteurProduit / produit.getIllustration().getHeight();
-            produit.getIllustration().draw(x,y, produit.getIllustration().getWidth() * scale, produit.getIllustration().getHeight() * scale);
-            //Calculer la prochaine position de l'image
-            y = y + hauteurProduit;
-            transp = transp + scaleTransp;
+        for (ProduitBot produitBot : shop.getProduitsBots()) {
+        	if(produitBot.estDisponible()) {
+	            Rectangle fondProduit = new Rectangle(x, y, w, hauteurProduit);
+	            g.setColor(new Color(255,255,255, transp));
+	            g.fill(fondProduit);
+	            
+	            // Afficher le produit
+	            produitBot.render(g, fondProduit);
+	            
+	            //Calculer la prochaine position de l'image
+	            y = y + hauteurProduit;
+	            transp = transp + scaleTransp;
+        	}
         }
     }
 

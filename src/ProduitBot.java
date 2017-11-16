@@ -1,28 +1,37 @@
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 public class ProduitBot extends Produit {
 
-    /* Attributs */
+	/***************************************************
+	ATTRIBUTS
+	***************************************************/
 
     // Model
     private EnsembleBot bot;// EnsembleBot correspondant au produit
     private int prixDeBase; //Prix original du bot
     private Partie partie; //partie dans laquelle on achète le produit
-    /* Constructeurs */
+    
+    // Vue
+    private ProduitBotVue vue; // la vue
+
+	/***************************************************
+	CONSTRUCTEUR
+	***************************************************/
 
     public ProduitBot(EnsembleBot bot, int prix, String image, Partie partie) throws SlickException {
         super(prix, image);
         this.bot = bot;
         this.prixDeBase = prix;
         this.partie = partie;
-
+        this.vue = new ProduitBotVue(this);
     }
 
-    /* Méthodes */
-
-    //@Override
-    //public void afficher(){}
+	/***************************************************
+	METHODES
+	***************************************************/
 
     @Override
     public void acheter() {
@@ -41,34 +50,31 @@ public class ProduitBot extends Produit {
                 e.printStackTrace();
 
             }
-
         }
     }
+    
+    public void render(Graphics g, Rectangle rect) {
+    	vue.render(g, rect);
+    }
 
-
-    /* Getteurs et Setteurs */
+	/***************************************************
+	GETTEURS && SETTEURS
+	***************************************************/
 
     public int getPrixDeBase(){
         return prixDeBase;
     }
-
     public int getPrixActuel(){
 
         return this.prixDeBase;
     }
-
-
     public EnsembleBot getBot() {
         return bot;
     }
-
     public void setBot(EnsembleBot bot) {
         this.bot = bot;
     }
-
     public void setPrixDeBase(int prixDeBase) {
         this.prixDeBase = prixDeBase;
     }
-
-
 }
