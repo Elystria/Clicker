@@ -2,7 +2,7 @@
 /*** Description des Ensembles de Bots ***/
 
     Dans le Clicker, nous avons un certains nombre de bots que nous pouvous acheter. Seulement, pour ne pas
-que ceux-ci soient tous identiques à une image près, nous devons nous également nous attacher au design de leur
+que ceux-ci soient tous identiques à une image près, nous devons également nous attacher au design de leur
 caractéristiques.
 
     Mais quelles sont ces caractéristiques ?

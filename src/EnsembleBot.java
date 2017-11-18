@@ -1,25 +1,35 @@
+import org.newdawn.slick.Image;
+
 public class EnsembleBot {
 
-    /* Attributs */
+	/***************************************************
+	ATTRIBUTS
+	***************************************************/
+	
+	// Modèle de Marie
+    //private String nom; //Nom du bot
+    //private int gainPPS; //Gain de base d'un bot
+    //private int nbPossedes; // Nombre d'instance du même bot possédé
 
-    // Model
-    private String nom; //Nom du bot
-    private int gainPPS; //Gain de base d'un bot
-    private int nbPossedes; // Nombre d'instance du même bot possédé
+	/***************************************************
+	CONSTRUCTEUR
+	***************************************************/
 
     public EnsembleBot(String nom, int gain){
         this.nom = nom;
         this.gainPPS = gain;
         this.nbPossedes = 0;
     }
-
-    public EnsembleBot(){
-        this("default", 0);
-    }
+    
+	/***************************************************
+	METHODES
+	***************************************************/
 
     public void afficher(){}
 
-    /*Getters et Setters*/
+	/***************************************************
+	GETTEURS && SETTEURS
+	***************************************************/
 
     public String getNom() {
         return nom;

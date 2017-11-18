@@ -28,24 +28,27 @@ public class ProduitBot extends Produit {
         this.partie = partie;
         this.vue = new ProduitBotVue(this);
     }
-
+    
 	/***************************************************
 	METHODES
 	***************************************************/
 
     @Override
     public void acheter() {
-        //Peut-on acheter le produit ?
+        // Peut-on acheter le produit ?
         Counter counter = partie.getCounter();
 
         if(this.getPrixActuel() <= counter.getNbPixels()){
             this.bot.setNbPossedes(this.bot.getNbPossedes() + 1);
             System.out.println("acheté");
-            //Mettre le nombre de pixels possédés à jour
+            
+            // Mettre le nombre de pixels possédés à jour
             counter.setNbPixels(counter.getNbPixels() - this.getPrixActuel());
-            //Mettre à jour l'inventaire
+            
+            // Mettre à jour l'inventaire
             try {
-                partie.getInventaire().getProduitsPossedes().add(new ProduitBot(this.bot, this.getPrixActuel(), this.getIllustration().getResourceReference(), partie));
+            	// TODO !
+                //partie.getInventaire().getProduitsPossedes().add(new ProduitBot(this.bot, this.getPrixActuel(), this.getIllustration().getResourceReference(), partie));
             } catch (Exception e){
                 e.printStackTrace();
 
