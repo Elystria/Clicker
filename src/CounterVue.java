@@ -53,6 +53,7 @@ public class CounterVue {
     
     // Pour le texte
     private Text textNbPixel; // affiche le nombre de pixels
+    private Text textPps; // affiche le pps
 
 	/***************************************************
 	CONSTRUCTEUR
@@ -108,7 +109,8 @@ public class CounterVue {
                 Color.red);
         
         // Initialisation du texte
-        this.textNbPixel = new Text("NbPixels", "resources/fonts/LLPIXEL3.ttf", 20, Color.white);
+        this.textNbPixel = new Text("NbPixels", "resources/fonts/LLPIXEL3.ttf", 30, Color.white);
+        this.textPps = new Text("PPS", "resources/fonts/LLPIXEL3.ttf", 17, Color.red);
     }
     
 	/***************************************************
@@ -221,17 +223,19 @@ public class CounterVue {
     }
     
     private void renderText(Graphics g, WindowGame windows) throws SlickException {
-    	// le texte à écrire
-        String s = "Pixels : " + counter.getNbPixels();
-        textNbPixel.setTexte(s);
-        
-        // là où l'afficher
+        // Le nombre de pixels
         int xString = windows.getWindowsWidth() / 2;
-        int yString = windows.getWindowsHeight() / 2 - (int) (animation.getHeight() * size) / 2 - textNbPixel.getHeightText();
+        int yString = windows.getWindowsHeight() / 2 - (int) (animation.getHeight() * size) / 2 - textNbPixel.getHeightText() * 2;
+        String s = "Pixels : " + Math.round(counter.getNbPixels());
+        textNbPixel.setTexte(s);
         textNbPixel.centerArround(xString, yString);
-        
-        // on affiche
         textNbPixel.draw(g);
+
+        s = "PPS : " + String.format("%.3g%n", counter.getPps()) + "   PPC : " + String.format("%.3g%n", counter.getPpc());
+        yString += textPps.getHeightText();
+        textPps.setTexte(s);
+        textPps.centerArround(xString, yString);
+        textPps.draw(g);
     }
 
     /* S'occupe de mettre à jour le counter */

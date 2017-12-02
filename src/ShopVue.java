@@ -202,15 +202,20 @@ public class ShopVue {
         int y = (int) this.shopFond.getY();
         int w = (int) this.shopFond.getWidth();
         int h = (int) this.shopFond.getHeight();
-        int nbProduit = shop.getProduitsBots().size();
+        int nbProduit = 0;
+        for(ProduitBot pb : shop.getProduitsBots()) {
+            if(pb.estDisponible()) {
+                nbProduit ++;
+            }
+        }
         int transpDebut = 100;
         int transpFin = 200;
-        int scaleTransp = abs(transpFin - transpDebut)/(nbProduit-1);
+        int scaleTransp = abs(transpFin - transpDebut) / nbProduit;
         int hauteurProduit = h / 10; // on ne pourra jamais mettre plus de 10 produits dans le shop !
         							 // sinon il faudra rajouter des "palettes" pour les différentes dimensions
         float scale = 1f; // le zoom de l'image
 
-        int transp = transpDebut;
+        int transp = transpDebut + scaleTransp;
         // Affichage en degradé de niveaux de gris
         for (ProduitBot produitBot : shop.getProduitsBots()) {
         	if(produitBot.estDisponible()) {

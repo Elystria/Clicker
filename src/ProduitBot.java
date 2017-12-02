@@ -20,7 +20,8 @@ public class ProduitBot extends Produit {
 	CONSTRUCTEUR
 	***************************************************/
 
-    public ProduitBot(Bot bot, Partie partie) throws SlickException {
+    public ProduitBot(Bot bot, Disponibilite disponibilite, String image, Partie partie) throws SlickException {
+        super(disponibilite, image);
         this.bot = bot;
         this.partie = partie;
         this.vue = new ProduitBotVue(this);
@@ -42,7 +43,6 @@ public class ProduitBot extends Produit {
             // Puis obtenir l'objet
             bot.setNbPossede(bot.getNbPossede() + 1);
             System.out.println("acheté");
-            
 
             // Mettre à jour l'inventaire
             try {
@@ -57,10 +57,6 @@ public class ProduitBot extends Produit {
     
     public void render(Graphics g, Rectangle rect) {
     	vue.render(g, rect);
-    }
-
-    public boolean estDisponible() {
-        return bot.getDisponibilite().estDisponible();
     }
 
     /***************************************************

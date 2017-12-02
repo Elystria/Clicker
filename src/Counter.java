@@ -31,10 +31,11 @@ public class Counter {
 	***************************************************/
 
     // model
-    private int nbPixels; //Nombre de pixels possédés
-    private int pps; //Nombre de pixels gagnés chaque seconde
+    private float nbPixels; //Nombre de pixels possédés
+    private float pps; //Nombre de pixels gagnés chaque seconde
     private int lastPps, freqPps; // la dernière fois qu'on a gagné des pixels, la fréquenc à laquelle on les gagnes
-    private int ppc; //Nombre de pixels gagnés par clic
+    private float ppc; //Nombre de pixels gagnés par clic
+    private Partie partie;
     
     // la vue
     private CounterVue vue; // ça s'occupera de tout l'affichage
@@ -48,18 +49,19 @@ public class Counter {
 	CONSTRUCTEUR
 	***************************************************/
 
-    public Counter() throws SlickException {
-        this(0, 0, 1, 2.0f);
+    public Counter(Partie partie) throws SlickException {
+        this(0, 0f, 1f, 2.0f, partie);
     }
 
 
-    public Counter(int nbPixelsDepart, int pps, int ppc, float size) throws SlickException {
+    public Counter(int nbPixelsDepart, float pps, float ppc, float size, Partie partie) throws SlickException {
         // initialisation du model
         this.nbPixels = nbPixelsDepart;
         this.pps = pps ;
         this.lastPps = 0;
         this.freqPps = 1000;
         this.ppc = ppc ;
+        this.partie = partie;
         
         // création de la vue
         this.vue = new CounterVue(this, size);
@@ -103,20 +105,26 @@ public class Counter {
 
     /* S'occupe de mettre à jour le counter */
     public void update(int delta) {
-    	// On met à jour la vue
-    	vue.update(delta);
-    	
+        // On récupère le nouveau pps
+        pps = partie.getInventaire().getPpsFromBots();
+
         // On incrémente le counter toutes les secondes
         this.updatePixels(delta);
+
+    	// On met à jour la vue
+    	vue.update(delta);
     }
 
     // On augmente le nombre de pixels toutes les secondes !
     private void updatePixels(int delta) {
+        /*
         lastPps += delta;
         if(lastPps > freqPps) {
             nbPixels += pps;
             lastPps = 0;
         }
+        */
+        nbPixels += pps * (delta / 1000f);
     }
     
     /* Réagit lors du clic d'un utilisateur
@@ -136,8 +144,6 @@ public class Counter {
         }
     }
 
-
-
 	/***************************************************
 	GETTEURS & SETTEURS
 	***************************************************/
@@ -151,27 +157,27 @@ public class Counter {
 		this.vue = vue;
 	}
 
-    public int getNbPixels() {
+    public float getNbPixels() {
         return nbPixels;
     }
 
-    public void setNbPixels(int nbPixels) {
+    public void setNbPixels(float nbPixels) {
         this.nbPixels = nbPixels;
     }
 
-    public int getPps() {
+    public float getPps() {
         return pps;
     }
 
-    public void setPps(int pps) {
+    public void setPps(float pps) {
         this.pps = pps;
     }
 
-    public int getPpc() {
+    public float getPpc() {
         return ppc;
     }
 
-    public void setPpc(int ppc) {
+    public void setPpc(float ppc) {
         this.ppc = ppc;
     }
 

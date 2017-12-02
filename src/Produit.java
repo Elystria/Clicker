@@ -11,7 +11,6 @@ public abstract class Produit {
 	***************************************************/
 
     // Model
-    private int prixDeBase;
     private Disponibilite disponibilite;
 
     // Vue
@@ -21,17 +20,9 @@ public abstract class Produit {
 	ATTRIBUTS
 	***************************************************/
 
-    public Produit(int prixDeBase, String image) throws SlickException {
-        this.prixDeBase = prixDeBase;
-        this.disponibilite = new DisponibiliteFalse();
+    public Produit(Disponibilite disponibilite, String image) throws SlickException {
+        this.disponibilite = disponibilite;
         this.illustration = new Image(image);
-    }
-
-    //Un produit par défaut
-    public Produit(){
-        this.prixDeBase = 0;
-        this.disponibilite = new DisponibiliteFalse();
-        this.illustration = null;
     }
 
 	/***************************************************
@@ -48,14 +39,8 @@ public abstract class Produit {
 	ATTRIBUTS
 	***************************************************/
 
-    public void setPrixActuel(int prixDeBase) {
-        this.prixDeBase = prixDeBase;
-    }
     public void setDisponibilite(Disponibilite disponibilite) {
         this.disponibilite = disponibilite;
-    }
-    public int getPrixActuel() {
-        return prixDeBase;
     }
     public Disponibilite getDisponibilite() {
         return disponibilite;

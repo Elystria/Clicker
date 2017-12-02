@@ -28,27 +28,9 @@ public class Inventaire {
         this.upgrades = new ArrayList<Upgrade>();
         
         // On rajoute les bots
-        int prixInitial;
-        float rapport;
-        float coefficiant;
-        Bot b;
-
-            // Point
-            prixInitial = 10;
-            rapport = 0.1f;
-            coefficiant = 1.1f;
-            b = new Bot("Point", "resources/shop/point_shop.png", prixInitial, rapport, coefficiant);
-            b.setDisponibilite(new DisponibiliteTrue());
-            bots.add(b);
-
-            // Ligne
-            prixInitial = Bot.prixInitialNextBot(bots.get(0), 1);
-            rapport = Bot.rapportDEfficaciteNextBot(bots.get(0), 1);
-            coefficiant = Bot.coefMultipliciteNextBot(bots.get(0), 1);
-            b = new Bot("Ligne", "resources/shop/droite_shop.png", prixInitial, rapport, coefficiant);
-            b.setDisponibilite(new DisponibiliteSeuilDePixels(100, partie.getCounter()));
-            bots.add(b);
-
+        for(ProduitBot pb : partie.getShop().getProduitsBots()) {
+            bots.add(pb.getBot());
+        }
 
         // On rajoute les upgrades
     }
@@ -56,6 +38,16 @@ public class Inventaire {
 	/***************************************************
 	METHODES
 	***************************************************/
+
+	public float getPpsFromBots() {
+	    float pps = 0;
+
+	    for(Bot b : bots) {
+	        pps += b.getPPSTotal();
+        }
+
+        return pps;
+    }
 
 	/***************************************************
 	GETTEURS && SETTEURS

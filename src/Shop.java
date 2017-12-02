@@ -1,24 +1,9 @@
-import org.lwjgl.Sys;
 import org.newdawn.slick.*;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.fills.GradientFill;
-import org.newdawn.slick.font.effects.ColorEffect;
-import org.newdawn.slick.geom.Rectangle;
-import org.w3c.dom.css.Rect;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static java.lang.Math.abs;
-import static java.lang.Math.min;
-import static java.lang.Math.nextAfter;
-
-
-//Ligne inutile !
 
 public class Shop {
 
@@ -45,6 +30,17 @@ public class Shop {
 
         // Création des Produits
         this.produitsBots = initProduitsBots();
+        /*
+        for(ProduitBot pb : produitsBots) {
+            System.out.println("Prix du " + pb.getBot().getNom() + " = " + pb.getBot().getPrixNextBot());
+        }
+        for(ProduitBot pb : produitsBots) {
+            System.out.println("Rapport du " + pb.getBot().getNom() + " = " + pb.getBot().getRapportDEfficacite());
+        }
+        for(ProduitBot pb : produitsBots) {
+            System.out.println("Coef du " + pb.getBot().getNom() + " = " + pb.getBot().getCoefMultiplicite());
+        }
+        */
         this.produitsUpgrades = initProduitsUpgrades();
 
         // Créer tous les produits
@@ -55,24 +51,91 @@ public class Shop {
     private List<ProduitBot> initProduitsBots() throws SlickException {
         List<ProduitBot> p = new ArrayList<ProduitBot>();
 
-        // Créer tous les produits que l'on pourra acheter
-        /*
-        p.add(new ProduitBot(new EnsembleBot("Pixel", 10), 10, "resources/shop/point_shop.png", partie));
-        p.add(new ProduitBot(new EnsembleBot("Ligne", 10), 10, "resources/shop/droite_shop.png", partie));
-        p.add(new ProduitBot(new EnsembleBot("Triangle", 10), 10, "resources/shop/triangle_shop.png", partie));
-        p.add(new ProduitBot(new EnsembleBot("Carre", 10), 10, "resources/shop/carre_shop.png", partie));
-        p.add(new ProduitBot(new EnsembleBot("Pentagone", 10), 10, "resources/shop/carre_shop.png", partie));
-        p.add(new ProduitBot(new EnsembleBot("Hexagone", 10), 10, "resources/shop/carre_shop.png", partie));
-        p.add(new ProduitBot(new EnsembleBot("Heptagone", 10), 10, "resources/shop/carre_shop.png", partie));
-        p.add(new ProduitBot(new EnsembleBot("Octogone", 10), 10, "resources/shop/carre_shop.png", partie));
-        p.add(new ProduitBot(new EnsembleBot("Énnéagone", 10), 10, "resources/shop/carre_shop.png", partie));
-        p.add(new ProduitBot(new EnsembleBot("Décagone", 10), 10, "resources/shop/carre_shop.png", partie));
-        */
-        List<Bot> bots = partie.getInventaire().getBots();
-        for(Bot b : bots) {
-            p.add(new ProduitBot(b, partie));
-        }
+        // On rajoute les bots
+        Integer prixInitial;
+        float rapport;
+        Bot b;
+        ProduitBot pb;
 
+        // Point
+        prixInitial = 10;
+        rapport = 0.01f;
+        b = new Bot("Point", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteTrue(), "resources/shop/point_shop.png", partie);
+        p.add(pb);
+
+
+        // Ligne
+        prixInitial = 100;
+        rapport = 0.007f;
+        b = new Bot("Ligne", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteSeuilDePixels(10, partie.getCounter()),
+                "resources/shop/droite_shop.png", partie);
+        p.add(pb);
+
+        // Triangle
+        prixInitial = 1_333;
+        rapport = 0.005f;
+        b = new Bot("Triangle", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteSeuilDePixels(b.getPrixNextBot() / 15, partie.getCounter()),
+                "resources/shop/triangle_shop.png", partie);
+        p.add(pb);
+
+        // Carre
+        prixInitial = 10_000;
+        rapport = 0.0025f;
+        b = new Bot("Carre", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteSeuilDePixels(b.getPrixNextBot() / 10, partie.getCounter()),
+                "resources/shop/carre_shop.png", partie);
+        p.add(pb);
+
+        // Pentagone
+        prixInitial = 55_555;
+        rapport = 0.001f;
+        b = new Bot("Pentagone", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteSeuilDePixels(b.getPrixNextBot() / 10, partie.getCounter()),
+                "resources/shop/carre_shop.png", partie);
+        p.add(pb);
+
+        // Hexagone
+        prixInitial = 1_000_000;
+        rapport = 0.0006f;
+        b = new Bot("Hexagone", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteSeuilDePixels(b.getPrixNextBot() / 25, partie.getCounter()),
+                "resources/shop/carre_shop.png", partie);
+        p.add(pb);
+
+        // Heptagone
+        prixInitial = 7_000_000;
+        rapport = 0.0003f;
+        b = new Bot("Heptagone", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteSeuilDePixels(b.getPrixNextBot() / 10, partie.getCounter()),
+                "resources/shop/carre_shop.png", partie);
+        p.add(pb);
+
+        // Octogone
+        prixInitial = 42_424_242;
+        rapport = 0.00015f;
+        b = new Bot("Octogone", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteSeuilDePixels(b.getPrixNextBot() / 10, partie.getCounter()),
+                "resources/shop/carre_shop.png", partie);
+        p.add(pb);
+
+        // Énnéagone
+        prixInitial = 999_999_999;
+        rapport = 0.00008f;
+        b = new Bot("Énnéagone", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteSeuilDePixels(b.getPrixNextBot() / 30, partie.getCounter()),
+                "resources/shop/carre_shop.png", partie);
+        p.add(pb);
+
+        // Décagone !
+        prixInitial = 2_147_483_647; // /!\ À mettre à 10_000_000_000 !
+        rapport = 0.000005f;
+        b = new Bot("Décagone !", prixInitial, rapport);
+        pb = new ProduitBot(b, new DisponibiliteSeuilDePixels(b.getPrixNextBot() / 2, partie.getCounter()),
+                "resources/shop/carre_shop.png", partie);
+        p.add(pb);
         return p;
     }
 
@@ -112,8 +175,9 @@ public class Shop {
             }
         }
         //Si on est dans la partie principale du Shop
-        if ( x > vue.getEnteteFond().getX() && x < vue.getEnteteFond().getX() + vue.getEnteteFond().getWidth()
+        if (x > vue.getEnteteFond().getX() && x < vue.getEnteteFond().getX() + vue.getEnteteFond().getWidth()
             && y > vue.getEnteteFond().getY() + vue.getEnteteFond().getHeight() ) {
+
             //Detection du produit sur lequel on a cliqué
             int nbProduits = this.produitsBots.size();
             int hauteur = produitsBots.get(0).getIllustration().getHeight();

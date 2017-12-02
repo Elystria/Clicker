@@ -23,9 +23,9 @@ public class Partie {
 
     public Partie() throws SlickException {
         this.windows = windows;
-        this.counter = new Counter();
-        this.inventaire = new Inventaire(this);
+        this.counter = new Counter(this);
         this.shop = new Shop(windows, this);
+        this.inventaire = new Inventaire(this);
     }
 
     /***************************************************
@@ -40,7 +40,7 @@ public class Partie {
         return counter;
     }
 
-    public Shop getShop(Partie this, Partie partie) {
+    public Shop getShop() {
         return shop;
     }
 

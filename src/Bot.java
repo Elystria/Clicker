@@ -9,16 +9,14 @@ public class Bot {
 
     // Model ludique
 	private String nom; // le nom du bot
-	private Image image; // l'image représentative du bot
-	
+
 	// Model mathématique
 	// À partir de ce modèle, on peut calculer les valeurs qui nous intéressent vraiment
 	private int prixInitial; // le prix initial du premier bot
 	private float rapportDEfficacite; // le rapport (prix / PPS) d'éfficacité d'un bot
 	private float coefMultiplicite; // le coefficiant de multiplicité, un bot coûte plus cher si on en a déjà du même type !
 	private int nbPossede; // le nombre d'instances de ce bot déjà possédées
-    private Disponibilite disponibilite; // quand le bot est enfin affiché pour pouvoir être acheté dans le shop
-	
+
 	// Valeurs numériques
 	// Il n'est pas pertinent de garder ces variables en attributs, il vaudra mieux utiliser des getteurs !
 	//private float PPS; // le gain par seconde d'un seul bot
@@ -28,18 +26,12 @@ public class Bot {
 	CONSTRUCTEUR
 	***************************************************/
 
-	public Bot(String nom, String image, int prixInitial, float rapportDEfficacite, float coefMultiplicite) {
+	public Bot(String nom, int prixInitial, float rapportDEfficacite) {
 		this.nom = nom;
-        try {
-            this.image = new Image(image);
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
         this.prixInitial = prixInitial;
 		this.rapportDEfficacite = rapportDEfficacite;
-		this.coefMultiplicite = coefMultiplicite;
+		this.coefMultiplicite = 1.15f;
 		this.nbPossede = 0;
-		this.disponibilite = new DisponibiliteFalse();
 	}
 	
 	/***************************************************
@@ -64,19 +56,14 @@ public class Bot {
 
 	public static int prixInitialNextBot(Bot botPrecedant, int index) {
 		int pi = botPrecedant.getPrixInitial();
-		return (int) (10 * (1 + 1/2 * Math.sin(2 * Math.PI * index/5)) * pi);
+		return (int) (10f * (1f + 1f/2f * Math.cos(2f * Math.PI * index/5f)) * pi);
 	}
 	
 	public static float rapportDEfficaciteNextBot(Bot botPrecedant, int index) {
 		float ri = botPrecedant.getRapportDEfficacite();
-		return (float) (1.6 * (1 + 1/4 * Math.cos(2 * Math.PI * index/5)) * ri);
+		return (float) (1.6f * (1f + 1f/4f * Math.cos(2f * Math.PI * index/2.5f)) * ri);
 	}
-	
-	public static float coefMultipliciteNextBot(Bot botPrecedant, int index) {
-		float mi = botPrecedant.getCoefMultiplicite();
-		return (float) (Math.pow(1.02,  index) * mi);
-	}
-	
+
 	/***************************************************
 	GETTEURS && SETTEURS
 	***************************************************/
@@ -87,14 +74,6 @@ public class Bot {
 
 	public void setNom(String nom) {
 		this.nom = nom;
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
-	public void setImage(Image image) {
-		this.image = image;
 	}
 
 	public int getPrixInitial() {
@@ -128,10 +107,4 @@ public class Bot {
 	public void setNbPossede(int nbPossede) {
 		this.nbPossede = nbPossede;
 	}
-    public Disponibilite getDisponibilite() {
-        return disponibilite;
-    }
-    public void setDisponibilite(Disponibilite disponibilite) {
-        this.disponibilite = disponibilite;
-    }
 }

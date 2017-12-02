@@ -20,6 +20,9 @@ des bots. On s'y tiendra méthodiquement pour les bots 2D, puis on se permettra 
 - r(i+1) = 1.6 * (1 + 1/4*cos(2*pie*i/5)) * r(i)
 - m(i+1) = (1.02)^i * m(i)
 
+/!\ En fait le coefficiant doit être constant et égale à 1.15, comme ça le prix d'un bot double à chaque fois qu'on
+en achète 5 ! :D
+
     Mais la caractéristique la plus importante sera sans aucun doute leur catégorie. En effet, pour que le
 jeu possède différentes phases de jeu et donc plus d'attrait ludique, il me semble pertinent de traiter certaines
 catégories de bots de manières différentes des autres !
