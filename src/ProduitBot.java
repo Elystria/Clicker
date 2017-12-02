@@ -10,8 +10,7 @@ public class ProduitBot extends Produit {
 	***************************************************/
 
     // Model
-    private EnsembleBot bot;// EnsembleBot correspondant au produit
-    private int prixDeBase; //Prix original du bot
+    private Bot bot;// EnsembleBot correspondant au produit
     private Partie partie; //partie dans laquelle on achète le produit
     
     // Vue
@@ -21,10 +20,8 @@ public class ProduitBot extends Produit {
 	CONSTRUCTEUR
 	***************************************************/
 
-    public ProduitBot(EnsembleBot bot, int prix, String image, Partie partie) throws SlickException {
-        super(prix, image);
+    public ProduitBot(Bot bot, Partie partie) throws SlickException {
         this.bot = bot;
-        this.prixDeBase = prix;
         this.partie = partie;
         this.vue = new ProduitBotVue(this);
     }
@@ -38,13 +35,15 @@ public class ProduitBot extends Produit {
         // Peut-on acheter le produit ?
         Counter counter = partie.getCounter();
 
-        if(this.getPrixActuel() <= counter.getNbPixels()){
-            this.bot.setNbPossedes(this.bot.getNbPossedes() + 1);
+        if(bot.getPrixNextBot() <= counter.getNbPixels()){
+            // Payer
+            counter.setNbPixels(counter.getNbPixels() - bot.getPrixNextBot());
+
+            // Puis obtenir l'objet
+            bot.setNbPossede(bot.getNbPossede() + 1);
             System.out.println("acheté");
             
-            // Mettre le nombre de pixels possédés à jour
-            counter.setNbPixels(counter.getNbPixels() - this.getPrixActuel());
-            
+
             // Mettre à jour l'inventaire
             try {
             	// TODO !
@@ -60,24 +59,17 @@ public class ProduitBot extends Produit {
     	vue.render(g, rect);
     }
 
-	/***************************************************
+    public boolean estDisponible() {
+        return bot.getDisponibilite().estDisponible();
+    }
+
+    /***************************************************
 	GETTEURS && SETTEURS
 	***************************************************/
-
-    public int getPrixDeBase(){
-        return prixDeBase;
-    }
-    public int getPrixActuel(){
-
-        return this.prixDeBase;
-    }
-    public EnsembleBot getBot() {
+    public Bot getBot() {
         return bot;
     }
-    public void setBot(EnsembleBot bot) {
+    public void setBot(Bot bot) {
         this.bot = bot;
-    }
-    public void setPrixDeBase(int prixDeBase) {
-        this.prixDeBase = prixDeBase;
     }
 }

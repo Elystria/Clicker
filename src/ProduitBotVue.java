@@ -1,5 +1,6 @@
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
 public class ProduitBotVue {
@@ -35,11 +36,12 @@ public class ProduitBotVue {
 	// le rectangle est la zone d'affichage
 	public void render(Graphics g, Rectangle rect) {
 		// afficher l'image
-        float scale = (float) rect.getHeight() / produit.getIllustration().getHeight();
-        produit.getIllustration().draw(rect.getX(), rect.getY()	, produit.getIllustration().getWidth() * scale, produit.getIllustration().getHeight() * scale);
+        Image img = produit.getBot().getImage();
+        float scale = (float) rect.getHeight() / img.getHeight();
+        img.draw(rect.getX(), rect.getY(), img.getWidth() * scale, img.getHeight() * scale);
 
 		// afficher le nom et le prix du produit
-        float offset = produit.getIllustration().getWidth() * scale ;
+        float offset = img.getWidth() * scale ;
         textNom.setPos((int)rect.getX() + (int)offset, (int)rect.getY());
         textPrix.setPos((int)rect.getX() + (int)offset,  (int)rect.getY() + (int)rect.getHeight() / 2);
         textNom.draw(g);

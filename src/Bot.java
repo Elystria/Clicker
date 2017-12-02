@@ -1,4 +1,5 @@
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 public class Bot {
 	
@@ -16,6 +17,7 @@ public class Bot {
 	private float rapportDEfficacite; // le rapport (prix / PPS) d'éfficacité d'un bot
 	private float coefMultiplicite; // le coefficiant de multiplicité, un bot coûte plus cher si on en a déjà du même type !
 	private int nbPossede; // le nombre d'instances de ce bot déjà possédées
+    private Disponibilite disponibilite; // quand le bot est enfin affiché pour pouvoir être acheté dans le shop
 	
 	// Valeurs numériques
 	// Il n'est pas pertinent de garder ces variables en attributs, il vaudra mieux utiliser des getteurs !
@@ -26,13 +28,18 @@ public class Bot {
 	CONSTRUCTEUR
 	***************************************************/
 
-	public Bot(String nom, Image image, int prixInitial, float rapportDEfficacite, float coefMultiplicite) {
+	public Bot(String nom, String image, int prixInitial, float rapportDEfficacite, float coefMultiplicite) {
 		this.nom = nom;
-		this.image = image;
-		this.prixInitial = prixInitial;
+        try {
+            this.image = new Image(image);
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+        this.prixInitial = prixInitial;
 		this.rapportDEfficacite = rapportDEfficacite;
 		this.coefMultiplicite = coefMultiplicite;
 		this.nbPossede = 0;
+		this.disponibilite = new DisponibiliteFalse();
 	}
 	
 	/***************************************************
@@ -50,25 +57,22 @@ public class Bot {
 	public float getPPSTotal() {
 		return getPPS() * nbPossede;
 	}
-	
+
 	/***************************************************
 	METHODES STATIQUES
 	***************************************************/
-//	- p(i+1) = 10 * (1 + 1/2*sin(2*pie*i/5)) * p(i)
-//			- r(i+1) = 1.6 * (1 + 1/4*cos(2*pie*i/5)) * r(i)
-//			- m(i+1) = (1.02)^i * m(i)
 
-	public int prixInitialNextBot(Bot botPrecedant, int index) {
+	public static int prixInitialNextBot(Bot botPrecedant, int index) {
 		int pi = botPrecedant.getPrixInitial();
 		return (int) (10 * (1 + 1/2 * Math.sin(2 * Math.PI * index/5)) * pi);
 	}
 	
-	public float rapportDEfficaciteNextBot(Bot botPrecedant, int index) {
+	public static float rapportDEfficaciteNextBot(Bot botPrecedant, int index) {
 		float ri = botPrecedant.getRapportDEfficacite();
 		return (float) (1.6 * (1 + 1/4 * Math.cos(2 * Math.PI * index/5)) * ri);
 	}
 	
-	public float coefMultipliciteNextBot(Bot botPrecedant, int index) {
+	public static float coefMultipliciteNextBot(Bot botPrecedant, int index) {
 		float mi = botPrecedant.getCoefMultiplicite();
 		return (float) (Math.pow(1.02,  index) * mi);
 	}
@@ -124,5 +128,10 @@ public class Bot {
 	public void setNbPossede(int nbPossede) {
 		this.nbPossede = nbPossede;
 	}
-	
+    public Disponibilite getDisponibilite() {
+        return disponibilite;
+    }
+    public void setDisponibilite(Disponibilite disponibilite) {
+        this.disponibilite = disponibilite;
+    }
 }

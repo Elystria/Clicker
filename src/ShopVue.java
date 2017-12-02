@@ -135,7 +135,6 @@ public class ShopVue {
         // afficher les produitsUpgrades disponibles en magasin
         // afficher les produitsBots disponibles en magasin
         this.renderProduits(g);
-        shop.getProduitsBots().get(0).getIllustration().draw();
     }
     
     /* Le Background du shop est un quadrillage de carrés de couleurs qui changent au fur et à mesure du temps */
@@ -203,9 +202,9 @@ public class ShopVue {
         int y = (int) this.shopFond.getY();
         int w = (int) this.shopFond.getWidth();
         int h = (int) this.shopFond.getHeight();
+        int nbProduit = shop.getProduitsBots().size();
         int transpDebut = 100;
         int transpFin = 200;
-        int nbProduit = shop.getProduitsBots().size();
         int scaleTransp = abs(transpFin - transpDebut)/(nbProduit-1);
         int hauteurProduit = h / 10; // on ne pourra jamais mettre plus de 10 produits dans le shop !
         							 // sinon il faudra rajouter des "palettes" pour les différentes dimensions

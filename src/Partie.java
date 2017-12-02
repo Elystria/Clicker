@@ -6,7 +6,9 @@ import org.newdawn.slick.SlickException;
  */
 public class Partie {
 
-    /* Attributs */
+    /***************************************************
+    METHODES
+    ***************************************************/
 
     private Counter counter;
     private WindowGame windows;
@@ -15,21 +17,24 @@ public class Partie {
 //    private Inventaire inventaire;
 //    private Events events;
 
-    /* Constructeurs */
+    /***************************************************
+    CONSTRUCTEUR
+    ***************************************************/
 
     public Partie() throws SlickException {
         this.windows = windows;
         this.counter = new Counter();
-        this.shop = new Shop(windows, this);
         this.inventaire = new Inventaire(this);
-//        this.shop = new Shop();
-//        this.inventaire = new Inventaire();
-//        this.events = new Events();
+        this.shop = new Shop(windows, this);
     }
 
-    /* Méthodes */
+    /***************************************************
+    METHODES
+    ***************************************************/
 
-    /* Getteurs et Setteurs */
+    /***************************************************
+    GETS && SETS
+    ***************************************************/
 
     public Counter getCounter() {
         return counter;

@@ -7,9 +7,9 @@ public class EnsembleBot {
 	***************************************************/
 	
 	// Modèle de Marie
-    //private String nom; //Nom du bot
-    //private int gainPPS; //Gain de base d'un bot
-    //private int nbPossedes; // Nombre d'instance du même bot possédé
+    private String nom; //Nom du bot
+    private int gainPPS; //Gain de base d'un bot
+    private int nbPossedes; // Nombre d'instance du même bot possédé
 
 	/***************************************************
 	CONSTRUCTEUR

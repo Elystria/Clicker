@@ -56,6 +56,7 @@ public class Shop {
         List<ProduitBot> p = new ArrayList<ProduitBot>();
 
         // Créer tous les produits que l'on pourra acheter
+        /*
         p.add(new ProduitBot(new EnsembleBot("Pixel", 10), 10, "resources/shop/point_shop.png", partie));
         p.add(new ProduitBot(new EnsembleBot("Ligne", 10), 10, "resources/shop/droite_shop.png", partie));
         p.add(new ProduitBot(new EnsembleBot("Triangle", 10), 10, "resources/shop/triangle_shop.png", partie));
@@ -66,6 +67,11 @@ public class Shop {
         p.add(new ProduitBot(new EnsembleBot("Octogone", 10), 10, "resources/shop/carre_shop.png", partie));
         p.add(new ProduitBot(new EnsembleBot("Énnéagone", 10), 10, "resources/shop/carre_shop.png", partie));
         p.add(new ProduitBot(new EnsembleBot("Décagone", 10), 10, "resources/shop/carre_shop.png", partie));
+        */
+        List<Bot> bots = partie.getInventaire().getBots();
+        for(Bot b : bots) {
+            p.add(new ProduitBot(b, partie));
+        }
 
         return p;
     }
